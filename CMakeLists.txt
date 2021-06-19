@@ -28,8 +28,10 @@ project(lina)
 add_library(lina
         include/lina/algorithm/algorithm.hpp
         include/lina/algorithm/matrix_ostream.hpp
+        include/lina/concepts/concepts.hpp
         include/lina/concepts/extent.hpp
         include/lina/concepts/is_matrix.hpp
+        include/lina/concepts/is_square_matrix.hpp
         include/lina/concepts/types.hpp
         include/lina/lina.hpp
         include/lina/storage/detail/index_iterator.hpp
