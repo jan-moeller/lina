@@ -22,9 +22,18 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_LINA_HPP
-#define LINA_LINA_HPP
+#ifndef LINA_EXTENT_HPP
+#define LINA_EXTENT_HPP
 
-#include "lina/concepts/is_matrix.hpp"
+#include "types.hpp"
 
-#endif // LINA_LINA_HPP
+namespace lina
+{
+struct extent
+{
+    column_type cols;
+    row_type    rows;
+};
+} // namespace lina
+
+#endif // LINA_EXTENT_HPP

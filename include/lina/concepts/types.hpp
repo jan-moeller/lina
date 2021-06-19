@@ -22,9 +22,17 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_LINA_HPP
-#define LINA_LINA_HPP
+#ifndef LINA_TYPES_HPP
+#define LINA_TYPES_HPP
 
-#include "lina/concepts/is_matrix.hpp"
+#include <cstdint>
 
-#endif // LINA_LINA_HPP
+namespace lina
+{
+using column_type     = std::uint8_t;
+using row_type        = std::uint8_t;
+using index_type      = std::uint16_t;
+using difference_type = std::int16_t;
+} // namespace lina
+
+#endif // LINA_TYPES_HPP

@@ -26,6 +26,9 @@ cmake_minimum_required(VERSION 3.20)
 project(lina)
 
 add_library(lina
+        include/lina/concepts/extent.hpp
+        include/lina/concepts/is_matrix.hpp
+        include/lina/concepts/types.hpp
         include/lina/lina.hpp
         )
 set_target_properties(lina PROPERTIES

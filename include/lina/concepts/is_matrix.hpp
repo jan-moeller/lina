@@ -22,9 +22,26 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_LINA_HPP
-#define LINA_LINA_HPP
+#ifndef LINA_IS_MATRIX_HPP
+#define LINA_IS_MATRIX_HPP
 
-#include "lina/concepts/is_matrix.hpp"
+#include "extent.hpp"
 
-#endif // LINA_LINA_HPP
+#include <concepts>
+
+namespace lina
+{
+template<typename M>
+struct matrix_adapter;
+
+template<typename M>
+concept is_matrix = requires(M m, M const& mc, M& mm)
+{
+    typename matrix_adapter<M>::value_type;
+    { matrix_adapter<M>::dim } -> std::convertible_to<extent>;
+    { matrix_adapter<M>::get(mc, 0u, 0u) } -> std::convertible_to<typename matrix_adapter<M>::value_type>;
+    { matrix_adapter<M>::get(mm, 0u, 0u) } -> std::convertible_to<typename matrix_adapter<M>::value_type&>;
+};
+} // namespace lina
+
+#endif // LINA_IS_MATRIX_HPP
