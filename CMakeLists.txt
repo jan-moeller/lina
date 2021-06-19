@@ -28,6 +28,7 @@ project(lina)
 add_library(lina
         include/lina/algorithm/algorithm.hpp
         include/lina/algorithm/matrix_ostream.hpp
+        include/lina/algorithm/trace.hpp
         include/lina/concepts/concepts.hpp
         include/lina/concepts/extent.hpp
         include/lina/concepts/is_matrix.hpp

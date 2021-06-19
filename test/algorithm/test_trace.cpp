@@ -22,10 +22,41 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "matrix_ostream.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+template<typename M>
+constexpr bool can_compute_trace = requires(M m)
+{
+    trace(m);
+};
+
+TEST_CASE("trace", "[algorithm]")
+{
+    SECTION("empty matrix")
+    {
+        matrix<double, {0, 0}> m{};
+        CHECK(trace(m) == 0);
+    }
+    SECTION("square matrix")
+    {
+        matrix<double, {3, 3}> m{2, 7, 6, 9, 5, 1, 4, 3, 8};
+        CHECK(trace(m) == 15);
+    }
+    SECTION("non-square matrix")
+    {
+        SECTION("wide")
+        {
+            static_assert(!can_compute_trace<matrix<double, {3, 2}>>);
+            CHECK(!can_compute_trace<matrix<double, {3, 2}>>);
+        }
+        SECTION("tall")
+        {
+            static_assert(!can_compute_trace<matrix<double, {2, 3}>>);
+            CHECK(!can_compute_trace<matrix<double, {2, 3}>>);
+        }
+    }
+}
