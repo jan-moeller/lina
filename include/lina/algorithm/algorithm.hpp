@@ -22,11 +22,9 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_LINA_HPP
-#define LINA_LINA_HPP
+#ifndef LINA_ALGORITHM_HPP
+#define LINA_ALGORITHM_HPP
 
-#include "lina/algorithm/algorithm.hpp"
-#include "lina/concepts/is_matrix.hpp"
-#include "lina/storage/matrix.hpp"
+#include "matrix_ostream.hpp"
 
-#endif // LINA_LINA_HPP
+#endif // LINA_ALGORITHM_HPP

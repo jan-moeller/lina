@@ -22,11 +22,34 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_LINA_HPP
-#define LINA_LINA_HPP
+#ifndef LINA_MATRIX_OSTREAM_HPP
+#define LINA_MATRIX_OSTREAM_HPP
 
-#include "lina/algorithm/algorithm.hpp"
 #include "lina/concepts/is_matrix.hpp"
-#include "lina/storage/matrix.hpp"
 
-#endif // LINA_LINA_HPP
+#include <ostream>
+
+namespace lina
+{
+template<is_matrix M>
+auto operator<<(std::ostream& os, M const& m) -> std::ostream&
+{
+    auto const& dim = matrix_adapter<M>::dim;
+    os << "{ ";
+    if (dim.cols > 0)
+    {
+        for (row_type y = 0; y < dim.rows; ++y)
+        {
+            os << m(0, y);
+            for (column_type x = 1; x < dim.cols; ++x)
+                os << ", " << matrix_adapter<M>::get(m, x, y);
+            if (y < dim.rows - 1)
+                os << "; ";
+        }
+    }
+    os << " }";
+    return os;
+}
+} // namespace lina
+
+#endif // LINA_MATRIX_OSTREAM_HPP

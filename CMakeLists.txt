@@ -26,6 +26,8 @@ cmake_minimum_required(VERSION 3.20)
 project(lina)
 
 add_library(lina
+        include/lina/algorithm/algorithm.hpp
+        include/lina/algorithm/matrix_ostream.hpp
         include/lina/concepts/extent.hpp
         include/lina/concepts/is_matrix.hpp
         include/lina/concepts/types.hpp
