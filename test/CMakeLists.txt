@@ -31,6 +31,7 @@ fetchcontent_makeavailable(Catch2)
 list(APPEND CMAKE_MODULE_PATH ${Catch2_SOURCE_DIR}/contrib)
 
 add_executable(lina-tests
+        storage/test_matrix.cpp
         test_main.cpp
         )
 target_link_libraries(lina-tests PRIVATE Catch2::Catch2 lina)

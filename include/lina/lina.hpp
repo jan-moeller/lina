@@ -26,5 +26,6 @@
 #define LINA_LINA_HPP
 
 #include "lina/concepts/is_matrix.hpp"
+#include "lina/storage/matrix.hpp"
 
 #endif // LINA_LINA_HPP
