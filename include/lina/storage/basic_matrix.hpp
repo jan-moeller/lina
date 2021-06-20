@@ -150,7 +150,7 @@ struct basic_matrix<T, matrix_dimension{.cols = 1, .rows = 1}>
     LINA_GEN_ITER_FUNS
     LINA_GEN_SIZE_FUN
 
-    value_type              x;
+    value_type                        x;
     static constexpr matrix_dimension dim = matrix_dimension{.cols = 1, .rows = 1};
 };
 
@@ -175,10 +175,10 @@ struct basic_matrix<T, matrix_dimension{.cols = 1, .rows = 1}>
 
 #define LINA_GEN_VECTOR_SPECIALIZATION(COLS, ROWS, ...)                                            \
     template<typename T>                                                                           \
-    struct basic_matrix<T, matrix_dimension{.cols = COLS, .rows = ROWS}>                                     \
+    struct basic_matrix<T, matrix_dimension{.cols = COLS, .rows = ROWS}>                           \
     {                                                                                              \
       private:                                                                                     \
-        using self_t = basic_matrix<T, matrix_dimension{.cols = COLS, .rows = ROWS}>;                        \
+        using self_t = basic_matrix<T, matrix_dimension{.cols = COLS, .rows = ROWS}>;              \
                                                                                                    \
       public:                                                                                      \
         LINA_GEN_COMMON_TYPEDEFS(T)                                                                \
@@ -210,7 +210,7 @@ struct basic_matrix<T, matrix_dimension{.cols = 1, .rows = 1}>
         LINA_GEN_ITER_FUNS                                                                         \
         LINA_GEN_SIZE_FUN                                                                          \
         LINA_GEN_VECTOR_STORAGE_MEMBER(__VA_ARGS__)                                                \
-        static constexpr matrix_dimension dim = matrix_dimension{.cols = COLS, .rows = ROWS};                          \
+        static constexpr matrix_dimension dim = matrix_dimension{.cols = COLS, .rows = ROWS};      \
                                                                                                    \
       private:                                                                                     \
         constexpr static value_type self_t::*const lookup[]{                                       \
