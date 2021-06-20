@@ -22,11 +22,16 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_CONCEPTS_HPP
-#define LINA_CONCEPTS_HPP
+#ifndef LINA_SAME_DIMENSION_HPP
+#define LINA_SAME_DIMENSION_HPP
 
 #include "is_matrix.hpp"
-#include "is_square_matrix.hpp"
-#include "same_dimension.hpp"
 
-#endif // LINA_CONCEPTS_HPP
+namespace lina
+{
+template<typename M, typename... Ms>
+concept same_dimension = is_matrix<M> and(is_matrix<Ms>and...)
+                         and ((matrix_adapter<M>::dim == matrix_adapter<Ms>::dim) and ...);
+}
+
+#endif // LINA_SAME_DIMENSION_HPP
