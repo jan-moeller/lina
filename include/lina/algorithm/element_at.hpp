@@ -30,14 +30,14 @@
 namespace lina
 {
 template<matrix M>
-constexpr auto element_at(M const& m, column_type c, row_type r) noexcept -> decltype(auto)
+constexpr auto element_at(M const& m, column_t c, row_t r) noexcept -> decltype(auto)
 {
     using A = matrix_adapter<M>;
     return A::get(m, A::index(m, c, r));
 }
 
 template<matrix M>
-constexpr auto element_at(M& m, column_type c, row_type r) noexcept -> decltype(auto)
+constexpr auto element_at(M& m, column_t c, row_t r) noexcept -> decltype(auto)
 {
     using A = matrix_adapter<M>;
     return A::get(m, A::index(m, c, r));

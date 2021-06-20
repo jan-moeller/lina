@@ -37,7 +37,7 @@ constexpr auto make_identity() noexcept -> M
     using A         = matrix_adapter<M>;
     auto const& dim = A::dim;
     M           m   = make_zero<M>();
-    for (index_type i = 0; i < dim.rows; ++i)
+    for (index_t i = 0; i < dim.rows; ++i)
         element_at(m, i, i) = 1;
     return m;
 }

@@ -38,8 +38,8 @@
 
 #define LINA_GEN_COMMON_TYPEDEFS(T)                                                                \
     using value_type      = std::remove_cvref_t<T>;                                                \
-    using size_type       = lina::index_type;                                                      \
-    using difference_type = lina::difference_type;                                                 \
+    using size_type       = lina::index_t;                                                         \
+    using difference_type = lina::difference_t;                                                    \
     using reference       = value_type&;                                                           \
     using const_reference = value_type const&;                                                     \
     using pointer         = value_type*;                                                           \
@@ -95,11 +95,11 @@ struct basic_matrix
     LINA_GEN_CONTIGUOUS_ITER_TYPEDEFS
     LINA_GEN_REVERSE_ITER_TYPEDEFS
 
-    [[nodiscard]] constexpr auto operator[](index_type idx) const noexcept -> value_type const&
+    [[nodiscard]] constexpr auto operator[](index_t idx) const noexcept -> value_type const&
     {
         return storage[idx];
     }
-    [[nodiscard]] constexpr auto operator[](index_type idx) noexcept -> value_type&
+    [[nodiscard]] constexpr auto operator[](index_t idx) noexcept -> value_type&
     {
         return storage[idx];
     }
@@ -125,14 +125,11 @@ struct basic_matrix<T, matrix_dimension{.cols = 1, .rows = 1}>
     LINA_GEN_CONTIGUOUS_ITER_TYPEDEFS
     LINA_GEN_REVERSE_ITER_TYPEDEFS
 
-    [[nodiscard]] constexpr auto operator[](index_type /*idx*/) const noexcept -> value_type const&
+    [[nodiscard]] constexpr auto operator[](index_t /*idx*/) const noexcept -> value_type const&
     {
         return x;
     }
-    [[nodiscard]] constexpr auto operator[](index_type /*idx*/) noexcept -> value_type&
-    {
-        return x;
-    }
+    [[nodiscard]] constexpr auto operator[](index_t /*idx*/) noexcept -> value_type& { return x; }
 
     LINA_GEN_2D_ACCESSOR
 
@@ -184,12 +181,11 @@ struct basic_matrix<T, matrix_dimension{.cols = 1, .rows = 1}>
         LINA_GEN_COMMON_TYPEDEFS(T)                                                                \
         LINA_GEN_INDEX_ITER_TYPEDEFS(self_t)                                                       \
         LINA_GEN_REVERSE_ITER_TYPEDEFS                                                             \
-        [[nodiscard]] constexpr auto operator[](index_type idx) const noexcept                     \
-            -> value_type const&                                                                   \
+        [[nodiscard]] constexpr auto operator[](index_t idx) const noexcept -> value_type const&   \
         {                                                                                          \
             return this->*(lookup[idx]);                                                           \
         }                                                                                          \
-        [[nodiscard]] constexpr auto operator[](index_type idx) noexcept -> value_type&            \
+        [[nodiscard]] constexpr auto operator[](index_t idx) noexcept -> value_type&               \
         {                                                                                          \
             return this->*(lookup[idx]);                                                           \
         }                                                                                          \
@@ -238,27 +234,26 @@ struct matrix_adapter<basic_matrix<T, E>>
 
     static constexpr matrix_dimension dim = E;
 
-    constexpr static auto get(basic_matrix<T, E> const& m, index_type idx) noexcept
-        -> decltype(auto)
+    constexpr static auto get(basic_matrix<T, E> const& m, index_t idx) noexcept -> decltype(auto)
     {
         return m[idx];
     }
-    constexpr static auto get(basic_matrix<T, E>& m, index_type idx) noexcept -> decltype(auto)
+    constexpr static auto get(basic_matrix<T, E>& m, index_t idx) noexcept -> decltype(auto)
     {
         return m[idx];
     }
-    constexpr static auto index(basic_matrix<T, E> const& m, column_type c, row_type r) noexcept
+    constexpr static auto index(basic_matrix<T, E> const& m, column_t c, row_t r) noexcept
         -> decltype(auto)
     {
         return detail::row_major_index(c, r, m.dim);
     }
 };
 
-template<typename T, column_type C>
+template<typename T, column_t C>
     requires(C > 0)
 using rvec = basic_matrix<T, {C, 1}>;
 
-template<typename T, row_type R>
+template<typename T, row_t R>
     requires(R > 0)
 using cvec = basic_matrix<T, {1, R}>;
 

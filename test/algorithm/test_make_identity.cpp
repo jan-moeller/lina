@@ -33,7 +33,7 @@ TEMPLATE_TEST_CASE("make_identity (success-test)", "[algorithm]", (mat2d), (mat3
     TestType const m = make_identity<TestType>();
     CHECK(trace(m) == matrix_adapter<TestType>::dim.cols);
     for_each_index<TestType>(
-        [&m](column_type c, row_type r)
+        [&m](column_t c, row_t r)
         {
             auto const v = element_at(m, c, r);
             CAPTURE(c, r);

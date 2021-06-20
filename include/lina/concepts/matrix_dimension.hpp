@@ -33,8 +33,8 @@ struct matrix_dimension
 {
     friend constexpr auto operator==(matrix_dimension, matrix_dimension) noexcept -> bool = default;
 
-    column_type cols;
-    row_type    rows;
+    column_t cols;
+    row_t    rows;
 };
 
 } // namespace lina

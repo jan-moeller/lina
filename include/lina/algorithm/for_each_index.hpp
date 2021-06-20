@@ -38,7 +38,7 @@ enum class traversal_order
     column_major,
 };
 
-template<matrix M, std::invocable<index_type> Fun>
+template<matrix M, std::invocable<index_t> Fun>
 constexpr auto for_each_index(Fun&& f) noexcept -> decltype(auto)
 {
     using A = matrix_adapter<M>;
@@ -49,24 +49,24 @@ constexpr auto for_each_index(Fun&& f) noexcept -> decltype(auto)
 
 template<matrix                                M,
          traversal_order                       Order = traversal_order::row_major,
-         std::invocable<column_type, row_type> Fun>
+         std::invocable<column_t, row_t> Fun>
 constexpr auto for_each_index(Fun&& f) noexcept -> decltype(auto)
 {
     using A = matrix_adapter<M>;
     static_assert(Order == traversal_order::row_major || Order == traversal_order::column_major);
     if constexpr (Order == traversal_order::row_major)
     {
-        for (row_type r = 0; r < A::dim.cols; ++r)
+        for (row_t r = 0; r < A::dim.cols; ++r)
         {
-            for (column_type c = 0; c < A::dim.rows; ++c)
+            for (column_t c = 0; c < A::dim.rows; ++c)
                 std::forward<Fun>(f)(c, r);
         }
     }
     else if constexpr (Order == traversal_order::column_major)
     {
-        for (column_type c = 0; c < A::dim.rows; ++c)
+        for (column_t c = 0; c < A::dim.rows; ++c)
         {
-            for (row_type r = 0; r < A::dim.cols; ++r)
+            for (row_t r = 0; r < A::dim.cols; ++r)
                 std::forward<Fun>(f)(c, r);
         }
     }

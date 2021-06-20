@@ -40,10 +40,10 @@ auto operator<<(std::ostream& os, M const& m) -> std::ostream&
     os << "{ ";
     if (dim.cols > 0)
     {
-        for (row_type y = 0; y < dim.rows; ++y)
+        for (row_t y = 0; y < dim.rows; ++y)
         {
             os << m(0, y);
-            for (column_type x = 1; x < dim.cols; ++x)
+            for (column_t x = 1; x < dim.cols; ++x)
                 os << ", " << element_at(m, x, y);
             if (y < dim.rows - 1)
                 os << "; ";

@@ -37,18 +37,18 @@ TEMPLATE_TEST_CASE("for_each_index",
     SECTION("any order")
     {
         TestType m{1, 2, 3, 4, 5, 6, 7, 8, 9};
-        for_each_index<M>([&, d = 1.](index_type i) mutable { CHECK(m[i] == d++); });
+        for_each_index<M>([&, d = 1.](index_t i) mutable { CHECK(m[i] == d++); });
     }
     SECTION("row-major")
     {
         TestType m{1, 2, 3, 4, 5, 6, 7, 8, 9};
-        for_each_index<M, traversal_order::row_major>([&, d = 1.](column_type c, row_type r) mutable
+        for_each_index<M, traversal_order::row_major>([&, d = 1.](column_t c, row_t r) mutable
                                                       { CHECK(m(c, r) == d++); });
     }
     SECTION("column-major")
     {
         TestType m{1, 4, 7, 2, 5, 8, 3, 6, 9};
         for_each_index<M, traversal_order::column_major>(
-            [&, d = 1.](column_type c, row_type r) mutable { CHECK(m(c, r) == d++); });
+            [&, d = 1.](column_t c, row_t r) mutable { CHECK(m(c, r) == d++); });
     }
 }

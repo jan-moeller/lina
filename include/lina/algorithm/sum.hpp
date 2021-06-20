@@ -40,7 +40,7 @@ constexpr auto sum(Lhs const& lhs, Rhs const&... rhs) noexcept -> matrix auto
     using result_t = basic_matrix<value_t, matrix_adapter<Lhs>::dim>;
     result_t result{lhs};
 
-    auto&& adder = [&](index_type i)
+    auto&& adder = [&](index_t i)
     {
         matrix_adapter<result_t>::get(result, i) += (matrix_adapter<Rhs>::get(rhs, i) + ...);
     };

@@ -29,10 +29,10 @@
 
 namespace lina
 {
-using column_type     = std::uint8_t;
-using row_type        = std::uint8_t;
-using index_type      = std::uint16_t;
-using difference_type = std::int16_t;
+using column_t     = std::uint8_t;
+using row_t        = std::uint8_t;
+using index_t      = std::uint16_t;
+using difference_t = std::int16_t;
 } // namespace lina
 
 #endif // LINA_TYPES_HPP

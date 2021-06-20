@@ -40,12 +40,12 @@ concept matrix = requires(M m, M const& mc, M& mm)
     std::copyable<M>;
     typename matrix_adapter<M>::value_type;
     { matrix_adapter<M>::dim } -> std::convertible_to<matrix_dimension>;
-    { matrix_adapter<M>::get(mc, std::declval<index_type>()) }
+    { matrix_adapter<M>::get(mc, std::declval<index_t>()) }
         -> std::convertible_to<typename matrix_adapter<M>::value_type>;
-    { matrix_adapter<M>::get(mm, std::declval<index_type>()) }
+    { matrix_adapter<M>::get(mm, std::declval<index_t>()) }
         -> std::convertible_to<typename matrix_adapter<M>::value_type&>;
-    { matrix_adapter<M>::index(mc, std::declval<column_type>(), std::declval<row_type>()) }
-        -> std::convertible_to<index_type>;
+    { matrix_adapter<M>::index(mc, std::declval<column_t>(), std::declval<row_t>()) }
+        -> std::convertible_to<index_t>;
 };
 } // namespace lina
 

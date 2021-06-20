@@ -37,7 +37,7 @@ template<matrix M, std::invocable<typename matrix_adapter<M>::value_type const&>
 constexpr auto for_each(M const& m, Fun&& f) noexcept -> decltype(auto)
 {
     using A = matrix_adapter<M>;
-    auto l  = [&m, fn = std::forward<Fun>(f)](index_type idx) mutable
+    auto l  = [&m, fn = std::forward<Fun>(f)](index_t idx) mutable
     {
         std::forward<Fun>(fn)(A::get(m, idx));
     };
@@ -48,7 +48,7 @@ template<matrix M, std::invocable<typename matrix_adapter<M>::value_type&> Fun>
 constexpr auto for_each(M& m, Fun&& f) noexcept -> decltype(auto)
 {
     using A = matrix_adapter<M>;
-    auto l  = [&m, fn = std::forward<Fun>(f)](index_type idx) mutable
+    auto l  = [&m, fn = std::forward<Fun>(f)](index_t idx) mutable
     {
         std::forward<Fun>(fn)(A::get(m, idx));
     };

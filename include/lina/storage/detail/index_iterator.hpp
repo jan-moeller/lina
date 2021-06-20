@@ -89,10 +89,9 @@ class index_iterator
         return lhs -= rhs;
     }
 
-    friend constexpr auto operator-(index_iterator lhs, index_iterator rhs) noexcept
-        -> difference_type
+    friend constexpr auto operator-(index_iterator lhs, index_iterator rhs) noexcept -> difference_t
     {
-        return static_cast<difference_type>(lhs.m_idx) - rhs.m_idx;
+        return static_cast<difference_t>(lhs.m_idx) - rhs.m_idx;
     }
 
     constexpr auto operator--() noexcept -> index_iterator&

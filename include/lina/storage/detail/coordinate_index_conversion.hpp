@@ -30,12 +30,12 @@
 
 namespace lina::detail
 {
-constexpr auto row_major_index(column_type c, row_type r, matrix_dimension dim) noexcept -> index_type
+constexpr auto row_major_index(column_t c, row_t r, matrix_dimension dim) noexcept -> index_t
 {
     return c + r * dim.cols;
 }
 
-constexpr auto column_major_index(column_type c, row_type r, matrix_dimension dim) noexcept -> index_type
+constexpr auto column_major_index(column_t c, row_t r, matrix_dimension dim) noexcept -> index_t
 {
     return r + c * dim.rows;
 }
