@@ -22,17 +22,14 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+TEMPLATE_TEST_CASE("make_zero", "[algorithm]", (basic_matrix<double, {3, 2}>), (rvec2f), (cvec4d))
+{
+    TestType const m = make_zero<TestType>();
+    for_each(m, [&](auto const& v) { CHECK(v == 0); });
+}
