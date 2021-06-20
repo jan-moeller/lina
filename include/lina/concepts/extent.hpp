@@ -31,9 +31,12 @@ namespace lina
 {
 struct extent
 {
+    friend constexpr auto operator==(extent, extent) noexcept -> bool = default;
+
     column_type cols;
     row_type    rows;
 };
+
 } // namespace lina
 
 #endif // LINA_EXTENT_HPP
