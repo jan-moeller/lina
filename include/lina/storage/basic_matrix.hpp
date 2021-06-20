@@ -253,7 +253,63 @@ struct matrix_adapter<basic_matrix<T, E>>
         return detail::row_major_index(c, r, m.dim);
     }
 };
-} // namespace lina
+
+template<typename T, column_type C>
+    requires(C > 0)
+using rvec = basic_matrix<T, {C, 1}>;
+
+template<typename T, row_type R>
+    requires(R > 0)
+using cvec = basic_matrix<T, {1, R}>;
+
+template<typename T>
+using rvec2 = rvec<T, 2>;
+template<typename T>
+using rvec3 = rvec<T, 3>;
+template<typename T>
+using rvec4 = rvec<T, 4>;
+
+template<typename T>
+using cvec2 = cvec<T, 2>;
+template<typename T>
+using cvec3 = cvec<T, 3>;
+template<typename T>
+using cvec4 = cvec<T, 4>;
+
+using rvec2d = rvec2<double>;
+using rvec3d = rvec3<double>;
+using rvec4d = rvec4<double>;
+
+using rvec2f = rvec2<float>;
+using rvec3f = rvec3<float>;
+using rvec4f = rvec4<float>;
+
+using cvec2d = cvec2<double>;
+using cvec3d = cvec3<double>;
+using cvec4d = cvec4<double>;
+
+using cvec2f = cvec2<float>;
+using cvec3f = cvec3<float>;
+using cvec4f = cvec4<float>;
+
+template<typename T>
+using mat2 = basic_matrix<T, {2, 2}>;
+
+template<typename T>
+using mat3 = basic_matrix<T, {3, 3}>;
+
+template<typename T>
+using mat4 = basic_matrix<T, {4, 4}>;
+
+using mat2d = mat2<double>;
+using mat3d = mat3<double>;
+using mat4d = mat4<double>;
+
+using mat2f = mat2<float>;
+using mat3f = mat3<float>;
+using mat4f = mat4<float>;
+
+}; // namespace lina
 
 #undef LINA_GEN_COMMON_TYPEDEFS
 #undef LINA_GEN_CONTIGUOUS_ITER_TYPEDEFS
