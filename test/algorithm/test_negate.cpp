@@ -22,15 +22,32 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "element_at.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "matrix_ostream.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+TEMPLATE_TEST_CASE("negate",
+                   "[algorithm]",
+                   (basic_matrix<double, {3, 2}>),
+                   (basic_matrix<double, {3, 2}> const))
+{
+    TestType m{1, 2, 3, 4, 5, 6};
+
+    constexpr basic_matrix<double, {3, 2}> expected{-1, -2, -3, -4, -5, -6};
+
+    auto const result = negate(m);
+    CHECK(result == expected);
+
+    if constexpr (std::is_const_v<TestType>)
+    {
+        static_assert(!requires(TestType t) { negate(std::in_place, t); });
+        CHECK(!requires(TestType t) { negate(std::in_place, t); });
+    }
+    else
+    {
+        negate(std::in_place, m);
+        CHECK(m == expected);
+    }
+}

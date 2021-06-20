@@ -22,15 +22,32 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_NEGATE_HPP
+#define LINA_NEGATE_HPP
 
-#include "element_at.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "matrix_ostream.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/algorithm/for_each.hpp"
+#include "lina/concepts/concepts.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+#include <utility>
+
+namespace lina
+{
+template<matrix M>
+[[nodiscard]] constexpr auto negate(M const& m) noexcept -> matrix auto
+{
+    using A = matrix_adapter<M>;
+    M result{m};
+    for_each(result, [](A::value_type& v) { v = -v; });
+    return result;
+}
+
+template<matrix M>
+constexpr auto negate(std::in_place_t, M& m) noexcept -> M&
+{
+    using A = matrix_adapter<M>;
+    for_each(m, [](A::value_type& v) { v = -v; });
+    return m;
+}
+} // namespace lina
+
+#endif // LINA_NEGATE_HPP
