@@ -32,8 +32,8 @@ add_library(lina
         include/lina/algorithm/sum.hpp
         include/lina/algorithm/trace.hpp
         include/lina/concepts/concepts.hpp
-        include/lina/concepts/extent.hpp
         include/lina/concepts/matrix.hpp
+        include/lina/concepts/matrix_dimension.hpp
         include/lina/concepts/same_dimension.hpp
         include/lina/concepts/square_matrix.hpp
         include/lina/concepts/types.hpp

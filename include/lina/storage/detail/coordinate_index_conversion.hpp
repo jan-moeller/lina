@@ -25,17 +25,17 @@
 #ifndef LINA_COORDINATE_INDEX_CONVERSION_HPP
 #define LINA_COORDINATE_INDEX_CONVERSION_HPP
 
-#include "lina/concepts/extent.hpp"
+#include "lina/concepts/matrix_dimension.hpp"
 #include "lina/concepts/types.hpp"
 
 namespace lina::detail
 {
-constexpr auto row_major_index(column_type c, row_type r, extent dim) noexcept -> index_type
+constexpr auto row_major_index(column_type c, row_type r, matrix_dimension dim) noexcept -> index_type
 {
     return c + r * dim.cols;
 }
 
-constexpr auto column_major_index(column_type c, row_type r, extent dim) noexcept -> index_type
+constexpr auto column_major_index(column_type c, row_type r, matrix_dimension dim) noexcept -> index_type
 {
     return r + c * dim.rows;
 }

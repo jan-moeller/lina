@@ -22,16 +22,16 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_EXTENT_HPP
-#define LINA_EXTENT_HPP
+#ifndef LINA_MATRIX_DIMENSION_HPP
+#define LINA_MATRIX_DIMENSION_HPP
 
 #include "types.hpp"
 
 namespace lina
 {
-struct extent
+struct matrix_dimension
 {
-    friend constexpr auto operator==(extent, extent) noexcept -> bool = default;
+    friend constexpr auto operator==(matrix_dimension, matrix_dimension) noexcept -> bool = default;
 
     column_type cols;
     row_type    rows;
@@ -39,4 +39,4 @@ struct extent
 
 } // namespace lina
 
-#endif // LINA_EXTENT_HPP
+#endif // LINA_MATRIX_DIMENSION_HPP

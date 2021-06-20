@@ -25,7 +25,7 @@
 #ifndef LINA_MATRIX_HPP
 #define LINA_MATRIX_HPP
 
-#include "extent.hpp"
+#include "matrix_dimension.hpp"
 
 #include <concepts>
 
@@ -38,7 +38,7 @@ template<typename M>
 concept matrix = requires(M m, M const& mc, M& mm)
 {
     typename matrix_adapter<M>::value_type;
-    { matrix_adapter<M>::dim } -> std::convertible_to<extent>;
+    { matrix_adapter<M>::dim } -> std::convertible_to<matrix_dimension>;
     { matrix_adapter<M>::get(mc, std::declval<index_type>()) }
         -> std::convertible_to<typename matrix_adapter<M>::value_type>;
     { matrix_adapter<M>::get(mm, std::declval<index_type>()) }
