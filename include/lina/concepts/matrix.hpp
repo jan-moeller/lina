@@ -37,6 +37,7 @@ struct matrix_adapter;
 template<typename M>
 concept matrix = requires(M m, M const& mc, M& mm)
 {
+    std::copyable<M>;
     typename matrix_adapter<M>::value_type;
     { matrix_adapter<M>::dim } -> std::convertible_to<matrix_dimension>;
     { matrix_adapter<M>::get(mc, std::declval<index_type>()) }
