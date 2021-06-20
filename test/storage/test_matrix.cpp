@@ -123,7 +123,7 @@ TEMPLATE_LIST_TEST_CASE("Matrix properties", "[storage]", test_types)
         CHECK(std::random_access_iterator<typename TestType::const_reverse_iterator>);
         CHECK(std::random_access_iterator<typename TestType::reverse_iterator>);
     }
-    SECTION("Matrix fullfills the is_matrix concept")
+    SECTION("Matrix fulfills the is_matrix concept")
     {
         static_assert(is_matrix<TestType>);
         CHECK(is_matrix<TestType>);
