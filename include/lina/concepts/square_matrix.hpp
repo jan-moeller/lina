@@ -22,16 +22,15 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_IS_SQUARE_MATRIX_HPP
-#define LINA_IS_SQUARE_MATRIX_HPP
+#ifndef LINA_SQUARE_MATRIX_HPP
+#define LINA_SQUARE_MATRIX_HPP
 
 #include "matrix.hpp"
 
 namespace lina
 {
 template<typename M>
-concept is_square_matrix = matrix<M> and(matrix_adapter<M>::dim.cols
-                                            == matrix_adapter<M>::dim.rows);
+concept square_matrix = matrix<M> and(matrix_adapter<M>::dim.cols == matrix_adapter<M>::dim.rows);
 }
 
-#endif // LINA_IS_SQUARE_MATRIX_HPP
+#endif // LINA_SQUARE_MATRIX_HPP

@@ -26,11 +26,11 @@
 #define LINA_TRACE_HPP
 
 #include "element_at.hpp"
-#include "lina/concepts/is_square_matrix.hpp"
+#include "lina/concepts/square_matrix.hpp"
 
 namespace lina
 {
-template<is_square_matrix M>
+template<square_matrix M>
 constexpr auto trace(M const& m) -> matrix_adapter<M>::value_type
 {
     using A         = matrix_adapter<M>;
