@@ -37,6 +37,7 @@ add_library(lina
         include/lina/concepts/same_dimension.hpp
         include/lina/concepts/square_matrix.hpp
         include/lina/concepts/types.hpp
+        include/lina/concepts/vector.hpp
         include/lina/lina.hpp
         include/lina/storage/basic_matrix.hpp
         include/lina/storage/detail/coordinate_index_conversion.hpp

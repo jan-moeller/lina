@@ -34,6 +34,7 @@ add_executable(lina-tests
         algorithm/test_element_at.cpp
         algorithm/test_sum.cpp
         algorithm/test_trace.cpp
+        concepts/test_concepts.cpp
         storage/test_basic_matrix.cpp
         test_main.cpp
         )

@@ -22,12 +22,23 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_CONCEPTS_HPP
-#define LINA_CONCEPTS_HPP
+#ifndef LINA_VECTOR_HPP
+#define LINA_VECTOR_HPP
 
 #include "matrix.hpp"
-#include "same_dimension.hpp"
-#include "square_matrix.hpp"
-#include "vector.hpp"
 
-#endif // LINA_CONCEPTS_HPP
+namespace lina
+{
+template<typename M>
+concept row_vector = matrix<M> and (matrix_adapter<M>::dim.rows == 1)
+                               and (matrix_adapter<M>::dim.cols > 0);
+
+template<typename M>
+concept column_vector = matrix<M> and (matrix_adapter<M>::dim.cols == 1)
+                                  and (matrix_adapter<M>::dim.rows > 0);
+
+template<typename M>
+concept vector = row_vector<M> or column_vector<M>;
+} // namespace lina
+
+#endif // LINA_VECTOR_HPP
