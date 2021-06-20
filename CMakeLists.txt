@@ -28,6 +28,8 @@ project(lina)
 add_library(lina
         include/lina/algorithm/algorithm.hpp
         include/lina/algorithm/element_at.hpp
+        include/lina/algorithm/for_each.hpp
+        include/lina/algorithm/for_each_index.hpp
         include/lina/algorithm/matrix_ostream.hpp
         include/lina/algorithm/sum.hpp
         include/lina/algorithm/trace.hpp

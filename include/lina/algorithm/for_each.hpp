@@ -22,14 +22,38 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_FOR_EACH_HPP
+#define LINA_FOR_EACH_HPP
 
-#include "element_at.hpp"
-#include "for_each.hpp"
 #include "for_each_index.hpp"
-#include "matrix_ostream.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/concepts/concepts.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+#include <concepts>
+#include <utility>
+
+namespace lina
+{
+template<matrix M, std::invocable<typename matrix_adapter<M>::value_type const&> Fun>
+constexpr auto for_each(M const& m, Fun&& f) noexcept -> decltype(auto)
+{
+    using A = matrix_adapter<M>;
+    auto l  = [&m, fn = std::forward<Fun>(f)](index_type idx) mutable
+    {
+        std::forward<Fun>(fn)(A::get(m, idx));
+    };
+    return for_each_index(m, l);
+}
+
+template<matrix M, std::invocable<typename matrix_adapter<M>::value_type&> Fun>
+constexpr auto for_each(M& m, Fun&& f) noexcept -> decltype(auto)
+{
+    using A = matrix_adapter<M>;
+    auto l  = [&m, fn = std::forward<Fun>(f)](index_type idx) mutable
+    {
+        std::forward<Fun>(fn)(A::get(m, idx));
+    };
+    return for_each_index(m, l);
+}
+} // namespace lina
+
+#endif // LINA_FOR_EACH_HPP

@@ -22,14 +22,22 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "element_at.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "matrix_ostream.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+TEMPLATE_TEST_CASE("for_each",
+                   "[algorithm]",
+                   (basic_matrix<double, {3, 3}>),
+                   (basic_matrix<double, {3, 3}> const))
+{
+    TestType m{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    for_each(m, [d = 1.](double const& v) mutable { CHECK(v == d++); });
+    if constexpr (!std::is_const_v<TestType>)
+    {
+        for_each(m, [](double& v) { v = -v; });
+        for_each(m, [d = -1.](double const& v) mutable { CHECK(v == d--); });
+    }
+}

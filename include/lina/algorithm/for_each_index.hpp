@@ -22,14 +22,24 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_FOR_EACH_INDEX_HPP
+#define LINA_FOR_EACH_INDEX_HPP
 
-#include "element_at.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "matrix_ostream.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/concepts/concepts.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+#include <concepts>
+#include <utility>
+
+namespace lina
+{
+template<matrix M, std::invocable<index_type> Fun>
+constexpr auto for_each_index(M const& m, Fun&& f) noexcept -> decltype(auto)
+{
+    using A = matrix_adapter<M>;
+    for (std::size_t i = 0; i < (A::dim.cols * A::dim.rows); ++i)
+        std::forward<Fun>(f)(i);
+    return std::forward<Fun>(f);
+}
+} // namespace lina
+
+#endif // LINA_FOR_EACH_INDEX_HPP
