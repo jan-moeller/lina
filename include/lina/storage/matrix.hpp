@@ -231,14 +231,18 @@ struct matrix_adapter<matrix<T, E>>
 
     static constexpr extent dim = E;
 
-    constexpr static auto get(matrix<T, E> const& m, column_type c, row_type r) noexcept
+    constexpr static auto get(matrix<T, E> const& m, index_type idx) noexcept -> decltype(auto)
+    {
+        return m[idx];
+    }
+    constexpr static auto get(matrix<T, E>& m, index_type idx) noexcept -> decltype(auto)
+    {
+        return m[idx];
+    }
+    constexpr static auto index(matrix<T, E> const& m, column_type c, row_type r) noexcept
         -> decltype(auto)
     {
-        return m(c, r);
-    }
-    constexpr static auto get(matrix<T, E>& m, column_type c, row_type r) noexcept -> decltype(auto)
-    {
-        return m(c, r);
+        return detail::row_major_index(c, r, m.dim);
     }
 };
 } // namespace lina

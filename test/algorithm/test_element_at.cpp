@@ -22,11 +22,20 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "element_at.hpp"
-#include "matrix_ostream.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+TEMPLATE_TEST_CASE("element_at",
+                   "[algorithm]",
+                   (matrix<double, {3, 3}>),
+                   (matrix<double, {3, 3}> const))
+{
+    TestType m{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    CHECK(element_at(m, 0, 0) == 1);
+    CHECK(element_at(m, 2, 0) == 3);
+    CHECK(element_at(m, 0, 2) == 7);
+    CHECK(element_at(m, 2, 2) == 9);
+}

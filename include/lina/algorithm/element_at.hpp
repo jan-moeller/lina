@@ -22,11 +22,26 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_ELEMENT_AT_HPP
+#define LINA_ELEMENT_AT_HPP
 
-#include "element_at.hpp"
-#include "matrix_ostream.hpp"
-#include "trace.hpp"
+#include "lina/concepts/is_matrix.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+namespace lina
+{
+template<is_matrix M>
+constexpr auto element_at(M const& m, column_type c, row_type r) noexcept -> decltype(auto)
+{
+    using A = matrix_adapter<M>;
+    return A::get(m, A::index(m, c, r));
+}
+
+template<is_matrix M>
+constexpr auto element_at(M& m, column_type c, row_type r) noexcept -> decltype(auto)
+{
+    using A = matrix_adapter<M>;
+    return A::get(m, A::index(m, c, r));
+}
+} // namespace lina
+
+#endif // LINA_ELEMENT_AT_HPP

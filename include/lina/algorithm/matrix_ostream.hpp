@@ -25,6 +25,7 @@
 #ifndef LINA_MATRIX_OSTREAM_HPP
 #define LINA_MATRIX_OSTREAM_HPP
 
+#include "element_at.hpp"
 #include "lina/concepts/is_matrix.hpp"
 
 #include <ostream>
@@ -34,7 +35,8 @@ namespace lina
 template<is_matrix M>
 auto operator<<(std::ostream& os, M const& m) -> std::ostream&
 {
-    auto const& dim = matrix_adapter<M>::dim;
+    using A         = matrix_adapter<M>;
+    auto const& dim = A::dim;
     os << "{ ";
     if (dim.cols > 0)
     {
@@ -42,7 +44,7 @@ auto operator<<(std::ostream& os, M const& m) -> std::ostream&
         {
             os << m(0, y);
             for (column_type x = 1; x < dim.cols; ++x)
-                os << ", " << matrix_adapter<M>::get(m, x, y);
+                os << ", " << element_at(m, x, y);
             if (y < dim.rows - 1)
                 os << "; ";
         }

@@ -25,6 +25,7 @@
 #ifndef LINA_TRACE_HPP
 #define LINA_TRACE_HPP
 
+#include "element_at.hpp"
 #include "lina/concepts/is_square_matrix.hpp"
 
 namespace lina
@@ -32,11 +33,12 @@ namespace lina
 template<is_square_matrix M>
 constexpr auto trace(M const& m) -> matrix_adapter<M>::value_type
 {
-    auto const& dim = matrix_adapter<M>::dim;
-    
-    typename matrix_adapter<M>::value_type t = 0;
+    using A         = matrix_adapter<M>;
+    auto const& dim = A::dim;
+
+    typename A::value_type t = 0;
     for (row_type i = 0; i < dim.rows; ++i)
-        t += matrix_adapter<M>::get(m, i, i);
+        t += element_at(m, i, i);
     return t;
 }
 } // namespace lina
