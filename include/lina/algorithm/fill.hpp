@@ -22,16 +22,21 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_FILL_HPP
+#define LINA_FILL_HPP
 
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "matrix_ostream.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/algorithm/for_each.hpp"
+#include "lina/concepts/concepts.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+namespace lina
+{
+template<matrix M>
+constexpr auto fill(M& m, typename matrix_adapter<M>::value_type value) noexcept -> M&
+{
+    using A = matrix_adapter<M>;
+    for_each(m, [&](A::value_type& v) { v = value; });
+    return m;
+}
+} // namespace lina
+
+#endif // LINA_FILL_HPP

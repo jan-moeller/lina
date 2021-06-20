@@ -22,16 +22,28 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "matrix_ostream.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+TEMPLATE_TEST_CASE("fill",
+                   "[algorithm]",
+                   (basic_matrix<double, {3, 2}>),
+                   (basic_matrix<double, {3, 2}> const))
+{
+    TestType m{1, 2, 3, 4, 5, 6};
+
+    constexpr auto fill_value = 0;
+    if constexpr (std::is_const_v<TestType>)
+    {
+        static_assert(!requires(TestType t) { fill(t, fill_value); });
+        CHECK(!requires(TestType t) { fill(t, fill_value); });
+    }
+    else
+    {
+        fill(m, fill_value);
+        for_each(m, [&](auto const& v) { CHECK(v == fill_value); });
+    }
+}

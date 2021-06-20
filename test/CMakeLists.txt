@@ -32,6 +32,7 @@ list(APPEND CMAKE_MODULE_PATH ${Catch2_SOURCE_DIR}/contrib)
 
 add_executable(lina-tests
         algorithm/test_element_at.cpp
+        algorithm/test_fill.cpp
         algorithm/test_for_each.cpp
         algorithm/test_negate.cpp
         algorithm/test_sum.cpp
