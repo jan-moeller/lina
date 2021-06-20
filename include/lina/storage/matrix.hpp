@@ -225,6 +225,12 @@ LINA_GEN_VECTOR_SPECIALIZATION(1, 4, x, y, z, w)
 LINA_GEN_VECTOR_SPECIALIZATION(4, 1, x, y, z, w)
 
 template<typename T, extent E>
+constexpr auto operator==(matrix<T, E> const& lhs, matrix<T, E> const& rhs) noexcept -> bool
+{
+    return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+}
+
+template<typename T, extent E>
 struct matrix_adapter<matrix<T, E>>
 {
     using value_type = matrix<T, E>::value_type;

@@ -112,6 +112,11 @@ TEMPLATE_LIST_TEST_CASE("Matrix properties", "[storage]", test_types)
         static_assert(std::is_nothrow_swappable_v<TestType>);
         CHECK(std::is_nothrow_swappable_v<TestType>);
     }
+    SECTION("Matrix is equality comparable")
+    {
+        static_assert(std::equality_comparable<TestType>);
+        CHECK(std::equality_comparable<TestType>);
+    }
     SECTION("Iterators are random access")
     {
         static_assert(std::random_access_iterator<typename TestType::const_iterator>);
@@ -183,4 +188,14 @@ TEMPLATE_LIST_TEST_CASE("Can store and retrieve elements from matrix", "[storage
                          m.rend(),
                          std::views::iota(index_t{0}, TestType::size()).begin()));
     }
+}
+
+TEST_CASE("Matrices can be compared for equality", "[storage]")
+{
+    matrix<double, {3, 3}> m1{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    matrix<double, {3, 3}> m2{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    matrix<double, {3, 3}> m3{1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+    CHECK(m1 == m2);
+    CHECK(m1 != m3);
 }
