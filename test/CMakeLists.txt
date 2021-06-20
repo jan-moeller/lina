@@ -34,6 +34,7 @@ add_executable(lina-tests
         algorithm/test_element_at.cpp
         algorithm/test_fill.cpp
         algorithm/test_for_each.cpp
+        algorithm/test_make_one.cpp
         algorithm/test_make_zero.cpp
         algorithm/test_negate.cpp
         algorithm/test_sum.cpp

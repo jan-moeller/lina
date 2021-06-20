@@ -22,18 +22,21 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_MAKE_ONE_HPP
+#define LINA_MAKE_ONE_HPP
 
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/algorithm/fill.hpp"
+#include "lina/concepts/concepts.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+namespace lina
+{
+template<matrix M>
+constexpr auto make_one() noexcept -> M
+{
+    M m;
+    fill(m, 1);
+    return m;
+}
+} // namespace lina
+
+#endif // LINA_MAKE_ONE_HPP
