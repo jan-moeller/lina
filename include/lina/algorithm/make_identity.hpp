@@ -22,19 +22,25 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_MAKE_IDENTITY_HPP
+#define LINA_MAKE_IDENTITY_HPP
 
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/algorithm/element_at.hpp"
+#include "lina/algorithm/make_zero.hpp"
+#include "lina/concepts/concepts.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+namespace lina
+{
+template<square_matrix M>
+constexpr auto make_identity() noexcept -> M
+{
+    using A         = matrix_adapter<M>;
+    auto const& dim = A::dim;
+    M           m   = make_zero<M>();
+    for (index_type i = 0; i < dim.rows; ++i)
+        element_at(m, i, i) = 1;
+    return m;
+}
+} // namespace lina
+
+#endif // LINA_MAKE_IDENTITY_HPP

@@ -22,19 +22,34 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+TEMPLATE_TEST_CASE("make_identity (success-test)", "[algorithm]", (mat2d), (mat3d), (mat4f))
+{
+    TestType const m = make_identity<TestType>();
+    CHECK(trace(m) == matrix_adapter<TestType>::dim.cols);
+    for_each_index<TestType>(
+        [&m](column_type c, row_type r)
+        {
+            auto const v = element_at(m, c, r);
+            CAPTURE(c, r);
+            if (c == r)
+                CHECK(v == 1);
+            else
+                CHECK(v == 0);
+        });
+}
+
+TEMPLATE_TEST_CASE("make_identity (fail-test)",
+                   "[algorithm]",
+                   (basic_matrix<double, {3, 2}>),
+                   (cvec4d))
+{
+
+    static_assert(!requires(TestType t) { make_identity<TestType>(); });
+    CHECK(!requires(TestType t) { make_identity<TestType>(); });
+}

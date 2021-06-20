@@ -31,6 +31,7 @@ add_library(lina
         include/lina/algorithm/fill.hpp
         include/lina/algorithm/for_each.hpp
         include/lina/algorithm/for_each_index.hpp
+        include/lina/algorithm/make_identity.hpp
         include/lina/algorithm/make_one.hpp
         include/lina/algorithm/make_zero.hpp
         include/lina/algorithm/matrix_ostream.hpp
