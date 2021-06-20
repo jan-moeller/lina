@@ -26,13 +26,13 @@
 #define LINA_MATRIX_OSTREAM_HPP
 
 #include "element_at.hpp"
-#include "lina/concepts/is_matrix.hpp"
+#include "lina/concepts/matrix.hpp"
 
 #include <ostream>
 
 namespace lina
 {
-template<is_matrix M>
+template<matrix M>
 auto operator<<(std::ostream& os, M const& m) -> std::ostream&
 {
     using A         = matrix_adapter<M>;

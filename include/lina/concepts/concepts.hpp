@@ -25,8 +25,8 @@
 #ifndef LINA_CONCEPTS_HPP
 #define LINA_CONCEPTS_HPP
 
-#include "is_matrix.hpp"
 #include "is_square_matrix.hpp"
+#include "matrix.hpp"
 #include "same_dimension.hpp"
 
 #endif // LINA_CONCEPTS_HPP

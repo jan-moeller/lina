@@ -30,9 +30,9 @@
 
 namespace lina
 {
-template<is_matrix Lhs, is_matrix... Rhs>
+template<matrix Lhs, matrix... Rhs>
     requires(same_dimension<Lhs, Rhs...>)
-constexpr auto sum(Lhs const& lhs, Rhs const&... rhs) noexcept -> is_matrix auto
+constexpr auto sum(Lhs const& lhs, Rhs const&... rhs) noexcept -> matrix auto
 {
     using value_t  = std::common_type_t<typename matrix_adapter<Lhs>::value_type,
                                        typename matrix_adapter<Rhs>::value_type...>;

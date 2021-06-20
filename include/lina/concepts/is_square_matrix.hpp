@@ -25,12 +25,12 @@
 #ifndef LINA_IS_SQUARE_MATRIX_HPP
 #define LINA_IS_SQUARE_MATRIX_HPP
 
-#include "is_matrix.hpp"
+#include "matrix.hpp"
 
 namespace lina
 {
 template<typename M>
-concept is_square_matrix = is_matrix<M> and(matrix_adapter<M>::dim.cols
+concept is_square_matrix = matrix<M> and(matrix_adapter<M>::dim.cols
                                             == matrix_adapter<M>::dim.rows);
 }
 

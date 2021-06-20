@@ -22,8 +22,8 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_IS_MATRIX_HPP
-#define LINA_IS_MATRIX_HPP
+#ifndef LINA_MATRIX_HPP
+#define LINA_MATRIX_HPP
 
 #include "extent.hpp"
 
@@ -35,7 +35,7 @@ template<typename M>
 struct matrix_adapter;
 
 template<typename M>
-concept is_matrix = requires(M m, M const& mc, M& mm)
+concept matrix = requires(M m, M const& mc, M& mm)
 {
     typename matrix_adapter<M>::value_type;
     { matrix_adapter<M>::dim } -> std::convertible_to<extent>;
@@ -48,4 +48,4 @@ concept is_matrix = requires(M m, M const& mc, M& mm)
 };
 } // namespace lina
 
-#endif // LINA_IS_MATRIX_HPP
+#endif // LINA_MATRIX_HPP

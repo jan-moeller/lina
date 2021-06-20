@@ -25,18 +25,18 @@
 #ifndef LINA_ELEMENT_AT_HPP
 #define LINA_ELEMENT_AT_HPP
 
-#include "lina/concepts/is_matrix.hpp"
+#include "lina/concepts/matrix.hpp"
 
 namespace lina
 {
-template<is_matrix M>
+template<matrix M>
 constexpr auto element_at(M const& m, column_type c, row_type r) noexcept -> decltype(auto)
 {
     using A = matrix_adapter<M>;
     return A::get(m, A::index(m, c, r));
 }
 
-template<is_matrix M>
+template<matrix M>
 constexpr auto element_at(M& m, column_type c, row_type r) noexcept -> decltype(auto)
 {
     using A = matrix_adapter<M>;

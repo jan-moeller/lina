@@ -33,8 +33,8 @@ add_library(lina
         include/lina/algorithm/trace.hpp
         include/lina/concepts/concepts.hpp
         include/lina/concepts/extent.hpp
-        include/lina/concepts/is_matrix.hpp
         include/lina/concepts/is_square_matrix.hpp
+        include/lina/concepts/matrix.hpp
         include/lina/concepts/same_dimension.hpp
         include/lina/concepts/types.hpp
         include/lina/lina.hpp

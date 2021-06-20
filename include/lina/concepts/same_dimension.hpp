@@ -25,12 +25,12 @@
 #ifndef LINA_SAME_DIMENSION_HPP
 #define LINA_SAME_DIMENSION_HPP
 
-#include "is_matrix.hpp"
+#include "matrix.hpp"
 
 namespace lina
 {
 template<typename M, typename... Ms>
-concept same_dimension = is_matrix<M> and(is_matrix<Ms>and...)
+concept same_dimension = matrix<M> and(matrix<Ms>and...)
                          and ((matrix_adapter<M>::dim == matrix_adapter<Ms>::dim) and ...);
 }
 

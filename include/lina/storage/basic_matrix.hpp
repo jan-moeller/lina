@@ -26,7 +26,7 @@
 #define LINA_BASIC_MATRIX_HPP
 
 #include "detail/launder_const_iterator.hpp"
-#include "lina/concepts/is_matrix.hpp"
+#include "lina/concepts/matrix.hpp"
 #include "lina/concepts/types.hpp"
 #include "lina/storage/detail/coordinate_index_conversion.hpp"
 
