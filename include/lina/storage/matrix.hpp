@@ -28,6 +28,7 @@
 #include "detail/launder_const_iterator.hpp"
 #include "lina/concepts/is_matrix.hpp"
 #include "lina/concepts/types.hpp"
+#include "lina/storage/detail/coordinate_index_conversion.hpp"
 
 #include <array>
 #include <iterator>
@@ -76,11 +77,11 @@
 #define LINA_GEN_2D_ACCESSOR                                                                       \
     constexpr auto operator()(size_type col, size_type row)->reference                             \
     {                                                                                              \
-        return (*this)[col + row * dim.cols];                                                      \
+        return (*this)[detail::row_major_index(col, row, dim)];                                    \
     }                                                                                              \
     constexpr auto operator()(size_type col, size_type row) const->const_reference                 \
     {                                                                                              \
-        return (*this)[col + row * dim.cols];                                                      \
+        return (*this)[detail::row_major_index(col, row, dim)];                                    \
     }
 #define LINA_GEN_SIZE_FUN                                                                          \
     constexpr static auto size() noexcept->size_type { return dim.cols * dim.rows; }

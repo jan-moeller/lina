@@ -35,6 +35,7 @@ add_library(lina
         include/lina/concepts/is_square_matrix.hpp
         include/lina/concepts/types.hpp
         include/lina/lina.hpp
+        include/lina/storage/detail/coordinate_index_conversion.hpp
         include/lina/storage/detail/index_iterator.hpp
         include/lina/storage/detail/launder_const_iterator.hpp
         include/lina/storage/matrix.hpp
