@@ -22,8 +22,8 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_MATRIX_HPP
-#define LINA_MATRIX_HPP
+#ifndef LINA_BASIC_MATRIX_HPP
+#define LINA_BASIC_MATRIX_HPP
 
 #include "detail/launder_const_iterator.hpp"
 #include "lina/concepts/is_matrix.hpp"
@@ -89,7 +89,7 @@
 namespace lina
 {
 template<typename T, extent E>
-struct matrix
+struct basic_matrix
 {
     LINA_GEN_COMMON_TYPEDEFS(T)
     LINA_GEN_CONTIGUOUS_ITER_TYPEDEFS
@@ -119,7 +119,7 @@ struct matrix
 };
 
 template<typename T>
-struct matrix<T, extent{.cols = 1, .rows = 1}>
+struct basic_matrix<T, extent{.cols = 1, .rows = 1}>
 {
     LINA_GEN_COMMON_TYPEDEFS(T)
     LINA_GEN_CONTIGUOUS_ITER_TYPEDEFS
@@ -154,7 +154,7 @@ struct matrix<T, extent{.cols = 1, .rows = 1}>
     static constexpr extent dim = extent{.cols = 1, .rows = 1};
 };
 
-#define LINA_GEN_VECTOR_STORAGE_LOOKUP3(NAME) &matrix::NAME
+#define LINA_GEN_VECTOR_STORAGE_LOOKUP3(NAME) &basic_matrix::NAME
 #define LINA_GEN_VECTOR_STORAGE_LOOKUP2(NAME, ...)                                                 \
     LINA_GEN_VECTOR_STORAGE_LOOKUP3(NAME) __VA_OPT__(, LINA_GEN_VECTOR_STORAGE_LOOKUP3(__VA_ARGS__))
 #define LINA_GEN_VECTOR_STORAGE_LOOKUP1(NAME, ...)                                                 \
@@ -175,10 +175,10 @@ struct matrix<T, extent{.cols = 1, .rows = 1}>
 
 #define LINA_GEN_VECTOR_SPECIALIZATION(COLS, ROWS, ...)                                            \
     template<typename T>                                                                           \
-    struct matrix<T, extent{.cols = COLS, .rows = ROWS}>                                           \
+    struct basic_matrix<T, extent{.cols = COLS, .rows = ROWS}>                                     \
     {                                                                                              \
       private:                                                                                     \
-        using self_t = matrix<T, extent{.cols = COLS, .rows = ROWS}>;                              \
+        using self_t = basic_matrix<T, extent{.cols = COLS, .rows = ROWS}>;                        \
                                                                                                    \
       public:                                                                                      \
         LINA_GEN_COMMON_TYPEDEFS(T)                                                                \
@@ -225,27 +225,29 @@ LINA_GEN_VECTOR_SPECIALIZATION(1, 4, x, y, z, w)
 LINA_GEN_VECTOR_SPECIALIZATION(4, 1, x, y, z, w)
 
 template<typename T, extent E>
-constexpr auto operator==(matrix<T, E> const& lhs, matrix<T, E> const& rhs) noexcept -> bool
+constexpr auto operator==(basic_matrix<T, E> const& lhs, basic_matrix<T, E> const& rhs) noexcept
+    -> bool
 {
     return std::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
 template<typename T, extent E>
-struct matrix_adapter<matrix<T, E>>
+struct matrix_adapter<basic_matrix<T, E>>
 {
-    using value_type = matrix<T, E>::value_type;
+    using value_type = basic_matrix<T, E>::value_type;
 
     static constexpr extent dim = E;
 
-    constexpr static auto get(matrix<T, E> const& m, index_type idx) noexcept -> decltype(auto)
+    constexpr static auto get(basic_matrix<T, E> const& m, index_type idx) noexcept
+        -> decltype(auto)
     {
         return m[idx];
     }
-    constexpr static auto get(matrix<T, E>& m, index_type idx) noexcept -> decltype(auto)
+    constexpr static auto get(basic_matrix<T, E>& m, index_type idx) noexcept -> decltype(auto)
     {
         return m[idx];
     }
-    constexpr static auto index(matrix<T, E> const& m, column_type c, row_type r) noexcept
+    constexpr static auto index(basic_matrix<T, E> const& m, column_type c, row_type r) noexcept
         -> decltype(auto)
     {
         return detail::row_major_index(c, r, m.dim);
@@ -269,4 +271,4 @@ struct matrix_adapter<matrix<T, E>>
 #undef LINA_GEN_VECTOR_STORAGE_MEMBER
 #undef LINA_GEN_VECTOR_SPECIALIZATION
 
-#endif // LINA_MATRIX_HPP
+#endif // LINA_BASIC_MATRIX_HPP

@@ -30,15 +30,15 @@
 
 using namespace lina;
 
-using test_types = std::tuple<matrix<double, {0, 0}>,
-                              matrix<double, {1, 0}>,
-                              matrix<double, {0, 1}>,
-                              matrix<double, {1, 1}>,
-                              matrix<double, {2, 1}>,
-                              matrix<double, {3, 1}>,
-                              matrix<double, {4, 1}>,
-                              matrix<double, {5, 1}>,
-                              matrix<double, {4, 4}>>;
+using test_types = std::tuple<basic_matrix<double, {0, 0}>,
+                              basic_matrix<double, {1, 0}>,
+                              basic_matrix<double, {0, 1}>,
+                              basic_matrix<double, {1, 1}>,
+                              basic_matrix<double, {2, 1}>,
+                              basic_matrix<double, {3, 1}>,
+                              basic_matrix<double, {4, 1}>,
+                              basic_matrix<double, {5, 1}>,
+                              basic_matrix<double, {4, 4}>>;
 
 TEMPLATE_LIST_TEST_CASE("Matrix properties", "[storage]", test_types)
 {
@@ -192,9 +192,9 @@ TEMPLATE_LIST_TEST_CASE("Can store and retrieve elements from matrix", "[storage
 
 TEST_CASE("Matrices can be compared for equality", "[storage]")
 {
-    matrix<double, {3, 3}> m1{1, 2, 3, 4, 5, 6, 7, 8, 9};
-    matrix<double, {3, 3}> m2{1, 2, 3, 4, 5, 6, 7, 8, 9};
-    matrix<double, {3, 3}> m3{1, 1, 1, 1, 1, 1, 1, 1, 1};
+    basic_matrix<double, {3, 3}> m1{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    basic_matrix<double, {3, 3}> m2{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    basic_matrix<double, {3, 3}> m3{1, 1, 1, 1, 1, 1, 1, 1, 1};
 
     CHECK(m1 == m2);
     CHECK(m1 != m3);

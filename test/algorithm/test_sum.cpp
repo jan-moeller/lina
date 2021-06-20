@@ -30,10 +30,10 @@ using namespace lina;
 
 TEST_CASE("sum", "[algorithm]")
 {
-    matrix<double, {3, 2}> m1{1, 2, 3, 4, 5, 6};
-    matrix<double, {3, 2}> m2{0, -3, 1, 1, 0, 0};
-    matrix<double, {3, 2}> m3{-1, -1, 1, 2, -3, -4};
+    basic_matrix<double, {3, 2}> m1{1, 2, 3, 4, 5, 6};
+    basic_matrix<double, {3, 2}> m2{0, -3, 1, 1, 0, 0};
+    basic_matrix<double, {3, 2}> m3{-1, -1, 1, 2, -3, -4};
 
     auto const result = sum(m1, m2, m3);
-    CHECK(result == matrix<double, {3, 2}>{0, -2, 5, 7, 2, 2});
+    CHECK(result == basic_matrix<double, {3, 2}>{0, -2, 5, 7, 2, 2});
 }

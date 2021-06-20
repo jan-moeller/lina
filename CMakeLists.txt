@@ -38,10 +38,10 @@ add_library(lina
         include/lina/concepts/same_dimension.hpp
         include/lina/concepts/types.hpp
         include/lina/lina.hpp
+        include/lina/storage/basic_matrix.hpp
         include/lina/storage/detail/coordinate_index_conversion.hpp
         include/lina/storage/detail/index_iterator.hpp
         include/lina/storage/detail/launder_const_iterator.hpp
-        include/lina/storage/matrix.hpp
         )
 set_target_properties(lina PROPERTIES
         CXX_STANDARD 20

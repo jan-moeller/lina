@@ -26,7 +26,7 @@
 #define LINA_SUM_HPP
 
 #include "lina/concepts/concepts.hpp"
-#include "lina/storage/matrix.hpp"
+#include "lina/storage/basic_matrix.hpp"
 
 namespace lina
 {
@@ -36,7 +36,7 @@ constexpr auto sum(Lhs const& lhs, Rhs const&... rhs) noexcept -> is_matrix auto
 {
     using value_t  = std::common_type_t<typename matrix_adapter<Lhs>::value_type,
                                        typename matrix_adapter<Rhs>::value_type...>;
-    using result_t = matrix<value_t, matrix_adapter<Lhs>::dim>;
+    using result_t = basic_matrix<value_t, matrix_adapter<Lhs>::dim>;
     result_t result{lhs};
     for (std::size_t i = 0; i < lhs.size(); ++i)
         matrix_adapter<result_t>::get(result, i) += (matrix_adapter<Rhs>::get(rhs, i) + ...);

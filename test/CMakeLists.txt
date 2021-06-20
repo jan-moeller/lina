@@ -34,7 +34,7 @@ add_executable(lina-tests
         algorithm/test_element_at.cpp
         algorithm/test_sum.cpp
         algorithm/test_trace.cpp
-        storage/test_matrix.cpp
+        storage/test_basic_matrix.cpp
         test_main.cpp
         )
 target_link_libraries(lina-tests PRIVATE Catch2::Catch2 lina)

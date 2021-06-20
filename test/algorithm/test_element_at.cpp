@@ -30,8 +30,8 @@ using namespace lina;
 
 TEMPLATE_TEST_CASE("element_at",
                    "[algorithm]",
-                   (matrix<double, {3, 3}>),
-                   (matrix<double, {3, 3}> const))
+                   (basic_matrix<double, {3, 3}>),
+                   (basic_matrix<double, {3, 3}> const))
 {
     TestType m{1, 2, 3, 4, 5, 6, 7, 8, 9};
     CHECK(element_at(m, 0, 0) == 1);
