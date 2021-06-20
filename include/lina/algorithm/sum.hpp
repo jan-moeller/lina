@@ -25,6 +25,7 @@
 #ifndef LINA_SUM_HPP
 #define LINA_SUM_HPP
 
+#include "for_each_index.hpp"
 #include "lina/concepts/concepts.hpp"
 #include "lina/storage/basic_matrix.hpp"
 
@@ -38,8 +39,12 @@ constexpr auto sum(Lhs const& lhs, Rhs const&... rhs) noexcept -> matrix auto
                                        typename matrix_adapter<Rhs>::value_type...>;
     using result_t = basic_matrix<value_t, matrix_adapter<Lhs>::dim>;
     result_t result{lhs};
-    for (std::size_t i = 0; i < lhs.size(); ++i)
+
+    auto&& adder = [&](index_type i)
+    {
         matrix_adapter<result_t>::get(result, i) += (matrix_adapter<Rhs>::get(rhs, i) + ...);
+    };
+    for_each_index(result, adder);
     return result;
 }
 } // namespace lina
