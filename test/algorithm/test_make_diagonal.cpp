@@ -22,20 +22,23 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "make_diagonal.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+TEMPLATE_TEST_CASE("make_diagonal", "[algorithm]", (mat2d), (basic_matrix<float, {2, 3}>))
+{
+    TestType const m = make_diagonal<TestType>(1., 2.);
+    for_each_index<TestType>(
+        [&m, d = 1](column_t c, row_t r) mutable
+        {
+            auto const v = element_at(m, c, r);
+            CAPTURE(c, r);
+            if (c == r)
+                CHECK(v == d++);
+            else
+                CHECK(v == 0);
+        });
+}

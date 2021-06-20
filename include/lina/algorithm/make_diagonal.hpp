@@ -22,20 +22,32 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_MAKE_DIAGONAL_HPP
+#define LINA_MAKE_DIAGONAL_HPP
 
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "make_diagonal.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/algorithm/element_at.hpp"
+#include "lina/algorithm/make_zero.hpp"
+#include "lina/concepts/concepts.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+#include <algorithm>
+#include <array>
+
+namespace lina
+{
+template<matrix M, std::convertible_to<typename matrix_adapter<M>::value_type>... Us>
+constexpr auto make_diagonal(Us... values) noexcept -> M
+{
+    using A          = matrix_adapter<M>;
+    constexpr auto s = std::min(A::dim.rows, A::dim.cols);
+    static_assert(sizeof...(Us) == s, "Must pass in exactly the right amount of values");
+
+    std::array<typename A::value_type, s> diag{static_cast<A::value_type>(values)...};
+
+    M m = make_zero<M>();
+    for (column_t i = 0; i < s; ++i)
+        element_at(m, i, i) = diag[i];
+    return m;
+}
+} // namespace lina
+
+#endif // LINA_MAKE_DIAGONAL_HPP
