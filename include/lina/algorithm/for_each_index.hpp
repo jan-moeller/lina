@@ -33,7 +33,7 @@
 namespace lina
 {
 template<matrix M, std::invocable<index_type> Fun>
-constexpr auto for_each_index(M const& m, Fun&& f) noexcept -> decltype(auto)
+constexpr auto for_each_index(Fun&& f) noexcept -> decltype(auto)
 {
     using A = matrix_adapter<M>;
     for (std::size_t i = 0; i < (A::dim.cols * A::dim.rows); ++i)

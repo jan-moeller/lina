@@ -44,7 +44,7 @@ constexpr auto sum(Lhs const& lhs, Rhs const&... rhs) noexcept -> matrix auto
     {
         matrix_adapter<result_t>::get(result, i) += (matrix_adapter<Rhs>::get(rhs, i) + ...);
     };
-    for_each_index(result, adder);
+    for_each_index<result_t>(adder);
     return result;
 }
 } // namespace lina

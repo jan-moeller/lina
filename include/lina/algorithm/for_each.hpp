@@ -41,7 +41,7 @@ constexpr auto for_each(M const& m, Fun&& f) noexcept -> decltype(auto)
     {
         std::forward<Fun>(fn)(A::get(m, idx));
     };
-    return for_each_index(m, l);
+    return for_each_index<M>(l);
 }
 
 template<matrix M, std::invocable<typename matrix_adapter<M>::value_type&> Fun>
@@ -52,7 +52,7 @@ constexpr auto for_each(M& m, Fun&& f) noexcept -> decltype(auto)
     {
         std::forward<Fun>(fn)(A::get(m, idx));
     };
-    return for_each_index(m, l);
+    return for_each_index<M>(l);
 }
 } // namespace lina
 
