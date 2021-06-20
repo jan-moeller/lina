@@ -22,12 +22,26 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_SUM_HPP
+#define LINA_SUM_HPP
 
-#include "element_at.hpp"
-#include "matrix_ostream.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/concepts/concepts.hpp"
+#include "lina/storage/matrix.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+namespace lina
+{
+template<is_matrix Lhs, is_matrix... Rhs>
+    requires(same_dimension<Lhs, Rhs...>)
+constexpr auto sum(Lhs const& lhs, Rhs const&... rhs) noexcept -> is_matrix auto
+{
+    using value_t  = std::common_type_t<typename matrix_adapter<Lhs>::value_type,
+                                       typename matrix_adapter<Rhs>::value_type...>;
+    using result_t = matrix<value_t, matrix_adapter<Lhs>::dim>;
+    result_t result{lhs};
+    for (std::size_t i = 0; i < lhs.size(); ++i)
+        matrix_adapter<result_t>::get(result, i) += (matrix_adapter<Rhs>::get(rhs, i) + ...);
+    return result;
+}
+} // namespace lina
+
+#endif // LINA_SUM_HPP

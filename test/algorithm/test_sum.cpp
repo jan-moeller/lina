@@ -22,12 +22,18 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "element_at.hpp"
-#include "matrix_ostream.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+TEST_CASE("sum", "[algorithm]")
+{
+    matrix<double, {3, 2}> m1{1, 2, 3, 4, 5, 6};
+    matrix<double, {3, 2}> m2{0, -3, 1, 1, 0, 0};
+    matrix<double, {3, 2}> m3{-1, -1, 1, 2, -3, -4};
+
+    auto const result = sum(m1, m2, m3);
+    CHECK(result == matrix<double, {3, 2}>{0, -2, 5, 7, 2, 2});
+}
