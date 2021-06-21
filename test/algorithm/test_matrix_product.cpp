@@ -40,7 +40,7 @@ constexpr bool can_matrix_product_inplace = requires
     matrix_product(std::in_place, std::declval<Ts>()...);
 };
 
-TEST_CASE("matrix product", "[linalg]")
+TEST_CASE("matrix product", "[algorithm]")
 {
     GIVEN("two matrices with compatible dimensions")
     {
