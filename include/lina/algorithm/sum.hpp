@@ -29,6 +29,8 @@
 #include "lina/concepts/concepts.hpp"
 #include "lina/storage/basic_matrix.hpp"
 
+#include <utility>
+
 namespace lina
 {
 template<matrix Lhs, matrix... Rhs>
@@ -39,13 +41,19 @@ constexpr auto sum(Lhs const& lhs, Rhs const&... rhs) noexcept -> matrix auto
                                        typename matrix_adapter<Rhs>::value_type...>;
     using result_t = basic_matrix<value_t, matrix_adapter<Lhs>::dim>;
     result_t result{lhs};
+    return sum(std::in_place, result, rhs...);
+}
 
-    auto&& adder = [&](index_t i)
+template<matrix Lhs, matrix... Rhs>
+    requires(same_dimension<Lhs, Rhs...>)
+constexpr auto sum(std::in_place_t, Lhs& lhs, Rhs const&... rhs) noexcept -> Lhs&
+{
+    auto&& accumulate = [&](index_t i)
     {
-        matrix_adapter<result_t>::get(result, i) += (matrix_adapter<Rhs>::get(rhs, i) + ...);
+        matrix_adapter<Lhs>::get(lhs, i) += (matrix_adapter<Rhs>::get(rhs, i) + ...);
     };
-    for_each_index<result_t>(adder);
-    return result;
+    for_each_index<Lhs>(accumulate);
+    return lhs;
 }
 } // namespace lina
 

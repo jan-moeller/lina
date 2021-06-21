@@ -35,5 +35,7 @@ TEST_CASE("sum", "[algorithm]")
     basic_matrix<double, {3, 2}> m3{-1, -1, 1, 2, -3, -4};
 
     auto const result = sum(m1, m2, m3);
+    sum(std::in_place, m1, m2, m3);
     CHECK(result == basic_matrix<double, {3, 2}>{0, -2, 5, 7, 2, 2});
+    CHECK(m1 == result);
 }
