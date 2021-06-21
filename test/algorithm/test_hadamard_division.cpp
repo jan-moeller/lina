@@ -22,23 +22,22 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "hadamard_division.hpp"
-#include "hadamard_product.hpp"
-#include "make_diagonal.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "matrix_product.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+TEST_CASE("hadamard_division", "[algorithm]")
+{
+    basic_matrix<double, {3, 2}> m1{1, 2, 3, 4, 5, 6};
+    basic_matrix<double, {3, 2}> m2{1, 2, 1, 2, 1, 3};
+    basic_matrix<double, {3, 2}> m3{2, 2, 3, 2, 5, 2};
+
+    auto const result  = hadamard_division(m1, m2, m3);
+    auto const result2 = hadamard_division(hadamard_division(m1, m2), m3);
+    hadamard_division(std::in_place, m1, m2, m3);
+    CHECK(result == basic_matrix<double, {3, 2}>{0.5, 0.5, 1, 1, 1, 1});
+    CHECK(result == result2);
+    CHECK(m1 == result);
+}
