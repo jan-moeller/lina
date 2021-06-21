@@ -35,6 +35,7 @@ add_library(lina
         include/lina/algorithm/fill.hpp
         include/lina/algorithm/for_each.hpp
         include/lina/algorithm/for_each_index.hpp
+        include/lina/algorithm/hadamard_product.hpp
         include/lina/algorithm/make_diagonal.hpp
         include/lina/algorithm/make_identity.hpp
         include/lina/algorithm/make_one.hpp

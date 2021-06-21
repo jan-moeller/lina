@@ -22,22 +22,41 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_HADAMARD_PRODUCT_HPP
+#define LINA_HADAMARD_PRODUCT_HPP
 
+#include "detail/utility.hpp"
 #include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
 #include "for_each_index.hpp"
-#include "hadamard_product.hpp"
-#include "make_diagonal.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "matrix_product.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/concepts/concepts.hpp"
+#include "lina/storage/basic_matrix.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+#include <utility>
+
+namespace lina
+{
+template<matrix Lhs, matrix... Rhs>
+    requires(same_dimension<Lhs, Rhs...>)
+constexpr auto hadamard_product(Lhs const& lhs, Rhs const&... rhs) noexcept -> matrix auto
+{
+    using value_t  = std::common_type_t<typename matrix_adapter<Lhs>::value_type,
+                                       typename matrix_adapter<Rhs>::value_type...>;
+    using result_t = basic_matrix<value_t, detail::dim<Lhs>>;
+    result_t result{lhs};
+    return hadamard_product(std::in_place, result, rhs...);
+}
+
+template<matrix Lhs, matrix... Rhs>
+    requires(same_dimension<Lhs, Rhs...>)
+constexpr auto hadamard_product(std::in_place_t, Lhs& lhs, Rhs const&... rhs) noexcept -> Lhs&
+{
+    auto&& product = [&](index_t i)
+    {
+        matrix_adapter<Lhs>::get(lhs, i) *= (matrix_adapter<Rhs>::get(rhs, i) * ...);
+    };
+    for_each_index<Lhs>(product);
+    return lhs;
+}
+} // namespace lina
+
+#endif // LINA_HADAMARD_PRODUCT_HPP
