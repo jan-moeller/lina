@@ -44,6 +44,7 @@ add_library(lina
         include/lina/algorithm/matrix_ostream.hpp
         include/lina/algorithm/matrix_product.hpp
         include/lina/algorithm/negate.hpp
+        include/lina/algorithm/scalar_division.hpp
         include/lina/algorithm/scalar_product.hpp
         include/lina/algorithm/sum.hpp
         include/lina/algorithm/trace.hpp
