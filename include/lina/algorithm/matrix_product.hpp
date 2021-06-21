@@ -30,6 +30,7 @@
 #include "detail/matrix_product_result_type.hpp"
 #include "lina/algorithm/element_at.hpp"
 #include "lina/concepts/matrix.hpp"
+#include "lina/concepts/same_dimension.hpp"
 
 #include <array>
 #include <utility>
