@@ -26,7 +26,6 @@
 #define LINA_HADAMARD_PRODUCT_HPP
 
 #include "detail/utility.hpp"
-#include "element_at.hpp"
 #include "for_each_index.hpp"
 #include "lina/concepts/concepts.hpp"
 #include "lina/storage/basic_matrix.hpp"
@@ -39,8 +38,7 @@ template<matrix Lhs, matrix... Rhs>
     requires(same_dimension<Lhs, Rhs...>)
 constexpr auto hadamard_product(Lhs const& lhs, Rhs const&... rhs) noexcept -> matrix auto
 {
-    using value_t  = std::common_type_t<typename matrix_adapter<Lhs>::value_type,
-                                       typename matrix_adapter<Rhs>::value_type...>;
+    using value_t  = std::common_type_t<detail::value_type<Lhs>, detail::value_type<Rhs>...>;
     using result_t = basic_matrix<value_t, detail::dim<Lhs>>;
     result_t result{lhs};
     return hadamard_product(std::in_place, result, rhs...);
