@@ -22,24 +22,32 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "hadamard_division.hpp"
-#include "hadamard_product.hpp"
-#include "make_diagonal.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "matrix_product.hpp"
-#include "negate.hpp"
-#include "scalar_product.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+TEST_CASE("scalar_product", "[algorithm]")
+{
+    constexpr basic_matrix<double, {3, 2}> m{1, 2, 3, 4, 5, 6};
+    constexpr basic_matrix<double, {3, 2}> expected{3, 6, 9, 12, 15, 18};
+    constexpr float                        scalar = 3;
+
+    SECTION("copy")
+    {
+        auto const result1 = scalar_product(scalar, m);
+        auto const result2 = scalar_product(m, scalar);
+        CHECK(result1 == expected);
+        CHECK(result1 == result2);
+    }
+    SECTION("in place")
+    {
+        auto m1 = m;
+        auto m2 = m;
+        scalar_product(std::in_place, scalar, m1);
+        scalar_product(std::in_place, m2, scalar);
+        CHECK(m1 == expected);
+        CHECK(m1 == m2);
+    }
+}

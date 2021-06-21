@@ -43,6 +43,7 @@ add_executable(lina-tests
         algorithm/test_make_zero.cpp
         algorithm/test_matrix_product.cpp
         algorithm/test_negate.cpp
+        algorithm/test_scalar_product.cpp
         algorithm/test_sum.cpp
         algorithm/test_trace.cpp
         concepts/test_concepts.cpp
