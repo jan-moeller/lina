@@ -22,27 +22,29 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "dot_product.hpp"
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "hadamard_division.hpp"
-#include "hadamard_product.hpp"
-#include "make_diagonal.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "matrix_product.hpp"
-#include "negate.hpp"
-#include "scalar_division.hpp"
-#include "scalar_product.hpp"
-#include "subtract.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+TEST_CASE("subtract", "[algorithm]")
+{
+    constexpr basic_matrix<double, {3, 2}> m1{1, 2, 3, 4, 5, 6};
+    constexpr basic_matrix<double, {3, 2}> m2{0, -3, 1, 1, 0, 0};
+    constexpr basic_matrix<double, {3, 2}> m3{-1, -1, 1, 2, -3, -4};
+    constexpr basic_matrix<double, {3, 2}> expected{2, 6, 1, 1, 8, 10};
+
+    SECTION("copy")
+    {
+        auto result = subtract(m1, m2, m3);
+        CHECK(result == expected);
+        CHECK(result == subtract(subtract(m1, m2), m3));
+    }
+    SECTION("in place")
+    {
+        auto m = m1;
+        subtract(std::in_place, m, m2, m3);
+        CHECK(m == expected);
+    }
+}

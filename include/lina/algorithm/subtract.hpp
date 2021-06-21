@@ -22,27 +22,40 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_SUBTRACT_HPP
+#define LINA_SUBTRACT_HPP
 
-#include "dot_product.hpp"
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
+#include "detail/utility.hpp"
 #include "for_each_index.hpp"
-#include "hadamard_division.hpp"
-#include "hadamard_product.hpp"
-#include "make_diagonal.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "matrix_product.hpp"
-#include "negate.hpp"
-#include "scalar_division.hpp"
-#include "scalar_product.hpp"
-#include "subtract.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/algorithm/element_at.hpp"
+#include "lina/concepts/concepts.hpp"
+#include "lina/storage/basic_matrix.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+#include <utility>
+
+namespace lina
+{
+template<matrix Lhs, matrix... Rhs>
+    requires(same_dimension<Lhs, Rhs...>)
+constexpr auto subtract(Lhs const& lhs, Rhs const&... rhs) noexcept -> matrix auto
+{
+    using value_t  = std::common_type_t<detail::value_type<Lhs>, detail::value_type<Rhs>...>;
+    using result_t = basic_matrix<value_t, detail::dim<Lhs>>;
+    result_t result{lhs};
+    return subtract(std::in_place, result, rhs...);
+}
+
+template<matrix Lhs, matrix... Rhs>
+    requires(same_dimension<Lhs, Rhs...>)
+constexpr auto subtract(std::in_place_t, Lhs& lhs, Rhs const&... rhs) noexcept -> Lhs&
+{
+    auto&& accumulate = [&](index_t i)
+    {
+        element_at(lhs, i) -= (element_at(rhs, i) + ...);
+    };
+    for_each_index<Lhs>(accumulate);
+    return lhs;
+}
+} // namespace lina
+
+#endif // LINA_SUBTRACT_HPP

@@ -48,6 +48,7 @@ add_library(lina
         include/lina/algorithm/negate.hpp
         include/lina/algorithm/scalar_division.hpp
         include/lina/algorithm/scalar_product.hpp
+        include/lina/algorithm/subtract.hpp
         include/lina/algorithm/sum.hpp
         include/lina/algorithm/trace.hpp
         include/lina/concepts/concepts.hpp

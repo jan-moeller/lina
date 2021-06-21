@@ -46,6 +46,7 @@ add_executable(lina-tests
         algorithm/test_negate.cpp
         algorithm/test_scalar_division.cpp
         algorithm/test_scalar_product.cpp
+        algorithm/test_subtract.cpp
         algorithm/test_sum.cpp
         algorithm/test_trace.cpp
         concepts/test_concepts.cpp
