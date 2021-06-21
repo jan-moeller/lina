@@ -22,21 +22,43 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_MATRIX_PRODUCT_RESULT_TYPE_HPP
+#define LINA_MATRIX_PRODUCT_RESULT_TYPE_HPP
 
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "make_diagonal.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "matrix_product.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/concepts/matrix.hpp"
+#include "lina/storage/basic_matrix.hpp"
+#include "utility.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+#include <type_traits>
+
+namespace lina::detail
+{
+template<matrix... Ms>
+struct matrix_product_result_type
+{
+};
+
+template<matrix M>
+struct matrix_product_result_type<M>
+{
+    using type = M;
+};
+
+template<matrix Lhs, matrix Rhs>
+struct matrix_product_result_type<Lhs, Rhs>
+{
+    using type = std::enable_if_t<
+        cols<Lhs> == rows<Rhs>,
+        basic_matrix<std::common_type_t<value_type<Lhs>, value_type<Rhs>>, {cols<Rhs>, rows<Lhs>}>>;
+};
+
+template<matrix Lhs, matrix Rhs, matrix... More>
+struct matrix_product_result_type<Lhs, Rhs, More...>
+{
+    using type = typename matrix_product_result_type<
+        typename matrix_product_result_type<Lhs, Rhs>::type,
+        More...>::type;
+};
+} // namespace lina::detail
+
+#endif // LINA_MATRIX_PRODUCT_RESULT_TYPE_HPP

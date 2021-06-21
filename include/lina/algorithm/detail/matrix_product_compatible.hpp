@@ -22,21 +22,38 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_MATRIX_PRODUCT_COMPATIBLE_HPP
+#define LINA_MATRIX_PRODUCT_COMPATIBLE_HPP
 
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "make_diagonal.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "matrix_product.hpp"
-#include "negate.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/concepts/matrix.hpp"
+#include "utility.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+namespace lina::detail
+{
+template<matrix...>
+struct matrix_product_compatible;
+
+template<matrix M>
+struct matrix_product_compatible<M>
+{
+    static constexpr bool value = true;
+};
+
+template<matrix Lhs, matrix Rhs>
+struct matrix_product_compatible<Lhs, Rhs>
+{
+    static constexpr bool value = cols<Lhs> == rows<Rhs>;
+};
+
+template<matrix Lhs, matrix Rhs, matrix... More>
+struct matrix_product_compatible<Lhs, Rhs, More...>
+{
+    static constexpr bool value = matrix_product_compatible<Lhs, Rhs>::value
+                                  && matrix_product_compatible<Rhs, More...>::value;
+};
+
+template<matrix... Ms>
+constexpr bool matrix_product_compatible_v = matrix_product_compatible<Ms...>::value;
+} // namespace lina::detail
+
+#endif // LINA_MATRIX_PRODUCT_COMPATIBLE_HPP

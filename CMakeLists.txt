@@ -27,6 +27,9 @@ project(lina)
 
 add_library(lina
         include/lina/algorithm/algorithm.hpp
+        include/lina/algorithm/detail/lazy_matrix_product_evaluator.hpp
+        include/lina/algorithm/detail/matrix_product_compatible.hpp
+        include/lina/algorithm/detail/matrix_product_result_type.hpp
         include/lina/algorithm/detail/utility.hpp
         include/lina/algorithm/element_at.hpp
         include/lina/algorithm/fill.hpp
@@ -37,6 +40,7 @@ add_library(lina
         include/lina/algorithm/make_one.hpp
         include/lina/algorithm/make_zero.hpp
         include/lina/algorithm/matrix_ostream.hpp
+        include/lina/algorithm/matrix_product.hpp
         include/lina/algorithm/negate.hpp
         include/lina/algorithm/sum.hpp
         include/lina/algorithm/trace.hpp
