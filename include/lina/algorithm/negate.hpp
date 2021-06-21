@@ -33,12 +33,11 @@
 namespace lina
 {
 template<matrix M>
-[[nodiscard]] constexpr auto negate(M const& m) noexcept -> matrix auto
+[[nodiscard]] constexpr auto negate(M const& m) noexcept -> M
 {
     using A = matrix_adapter<M>;
     M result{m};
-    for_each(result, [](A::value_type& v) { v = -v; });
-    return result;
+    return negate(std::in_place, result);
 }
 
 template<matrix M>
