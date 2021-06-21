@@ -22,26 +22,28 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_DOT_PRODUCT_HPP
+#define LINA_DOT_PRODUCT_HPP
 
-#include "dot_product.hpp"
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "hadamard_division.hpp"
-#include "hadamard_product.hpp"
-#include "make_diagonal.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "matrix_product.hpp"
-#include "negate.hpp"
-#include "scalar_division.hpp"
-#include "scalar_product.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "detail/dot_product_compatible.hpp"
+#include "detail/utility.hpp"
+#include "lina/algorithm/element_at.hpp"
+#include "lina/algorithm/matrix_product.hpp"
+#include "lina/concepts/vector.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+#include <type_traits>
+#include <utility>
+
+namespace lina
+{
+template<vector Lhs, vector Rhs>
+    requires(detail::dot_product_compatible_v<Lhs, Rhs>)
+constexpr auto dot_product(Lhs const& lhs, Rhs const& rhs) noexcept
+    -> std::common_type_t<detail::value_type<Lhs>, detail::value_type<Rhs>>
+{
+    return element_at(matrix_product(lhs, rhs), 0);
+}
+
+} // namespace lina
+
+#endif // LINA_DOT_PRODUCT_HPP

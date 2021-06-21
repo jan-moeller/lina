@@ -27,10 +27,12 @@ project(lina)
 
 add_library(lina
         include/lina/algorithm/algorithm.hpp
+        include/lina/algorithm/detail/dot_product_compatible.hpp
         include/lina/algorithm/detail/lazy_matrix_product_evaluator.hpp
         include/lina/algorithm/detail/matrix_product_compatible.hpp
         include/lina/algorithm/detail/matrix_product_result_type.hpp
         include/lina/algorithm/detail/utility.hpp
+        include/lina/algorithm/dot_product.hpp
         include/lina/algorithm/element_at.hpp
         include/lina/algorithm/fill.hpp
         include/lina/algorithm/for_each.hpp

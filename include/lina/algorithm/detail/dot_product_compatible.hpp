@@ -22,26 +22,18 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#ifndef LINA_DOT_PRODUCT_COMPATIBLE_HPP
+#define LINA_DOT_PRODUCT_COMPATIBLE_HPP
 
-#include "dot_product.hpp"
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "hadamard_division.hpp"
-#include "hadamard_product.hpp"
-#include "make_diagonal.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "matrix_product.hpp"
-#include "negate.hpp"
-#include "scalar_division.hpp"
-#include "scalar_product.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include "lina/concepts/vector.hpp"
+#include "utility.hpp"
 
-#endif // LINA_ALGORITHM_HPP
+namespace lina::detail
+{
+template<vector Lhs, vector Rhs>
+constexpr bool
+    dot_product_compatible_v = detail::cols<Lhs> == detail::rows<Rhs>&& detail::rows<Lhs> == 1
+                               && detail::cols<Rhs> == 1;
+} // namespace lina::detail
+
+#endif // LINA_DOT_PRODUCT_COMPATIBLE_HPP

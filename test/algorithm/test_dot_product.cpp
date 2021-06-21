@@ -22,26 +22,39 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_ALGORITHM_HPP
-#define LINA_ALGORITHM_HPP
+#include "lina/lina.hpp"
 
-#include "dot_product.hpp"
-#include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
-#include "hadamard_division.hpp"
-#include "hadamard_product.hpp"
-#include "make_diagonal.hpp"
-#include "make_identity.hpp"
-#include "make_one.hpp"
-#include "make_zero.hpp"
-#include "matrix_ostream.hpp"
-#include "matrix_product.hpp"
-#include "negate.hpp"
-#include "scalar_division.hpp"
-#include "scalar_product.hpp"
-#include "sum.hpp"
-#include "trace.hpp"
+#include <catch2/catch.hpp>
 
-#endif // LINA_ALGORITHM_HPP
+using namespace lina;
+
+template<typename... Ts>
+constexpr bool can_dot_product = requires
+{
+    dot_product(std::declval<Ts>()...);
+};
+
+TEST_CASE("dot product", "[algorithm]")
+{
+    GIVEN("two vectors with compatible dimensions")
+    {
+        cvec3f rhs{1, 2, 3};
+        rvec3d lhs{3, 2, 1};
+        WHEN("calling dot_product() with them")
+        {
+            auto const result = dot_product(lhs, rhs);
+            THEN("the result should be correct") { CHECK(result == 10); }
+        }
+    }
+    GIVEN("two vectors with incompatible dimensions")
+    {
+        THEN("they cannot be matrix-multiplied")
+        {
+            static_assert(!can_dot_product<basic_matrix<float, {2, 3}>, rvec3d>);
+            CHECK(!can_dot_product<basic_matrix<float, {2, 3}>, rvec3d>);
+
+            static_assert(!can_dot_product<cvec3d, rvec3d>);
+            CHECK(!can_dot_product<cvec3d, rvec3d>);
+        }
+    }
+}
