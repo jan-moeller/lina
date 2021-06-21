@@ -27,6 +27,7 @@ project(lina)
 
 add_library(lina
         include/lina/algorithm/algorithm.hpp
+        include/lina/algorithm/detail/utility.hpp
         include/lina/algorithm/element_at.hpp
         include/lina/algorithm/fill.hpp
         include/lina/algorithm/for_each.hpp
