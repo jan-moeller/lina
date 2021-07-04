@@ -33,9 +33,6 @@ list(APPEND CMAKE_MODULE_PATH ${Catch2_SOURCE_DIR}/contrib)
 add_executable(lina-tests
         algorithm/test_dot_product.cpp
         algorithm/test_element_at.cpp
-        algorithm/test_fill.cpp
-        algorithm/test_for_each.cpp
-        algorithm/test_for_each_index.cpp
         algorithm/test_hadamard_division.cpp
         algorithm/test_hadamard_product.cpp
         algorithm/test_make_diagonal.cpp
@@ -50,8 +47,11 @@ add_executable(lina-tests
         algorithm/test_sum.cpp
         algorithm/test_trace.cpp
         concepts/test_concepts.cpp
-        storage/test_basic_matrix.cpp
         test_main.cpp
+        types/test_basic_matrix.cpp
+        types/test_column_major_iterator.cpp
+        types/test_native_order_iterator.cpp
+        types/test_row_major_iterator.cpp
         )
 target_link_libraries(lina-tests PRIVATE Catch2::Catch2 lina)
 set_target_properties(lina-tests PROPERTIES

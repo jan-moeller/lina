@@ -46,20 +46,19 @@ constexpr auto launder_const_iterator(std::reverse_iterator<Iter> iter) noexcept
     return std::make_reverse_iterator(launder_const_iterator(iter.base()));
 }
 
-template<typename ContainerPtr>
-    requires(std::is_pointer_v<ContainerPtr>)
-constexpr auto launder_const_iterator(index_iterator<ContainerPtr> iter) noexcept
+template<typename M, typename Fn>
+constexpr auto launder_const_iterator(index_iterator<M, Fn> iter) noexcept
 {
     auto const ptr  = iter.container();
-    using T         = std::add_pointer_t<std::remove_const_t<std::remove_pointer_t<ContainerPtr>>>;
-    auto const mptr = const_cast<T>(ptr);
-    return index_iterator(mptr, iter.index());
+    using T         = std::remove_pointer_t<decltype(ptr)>;
+    using Mutable   = std::remove_const_t<T>;
+    using MutPtr    = std::add_pointer_t<Mutable>;
+    auto const mptr = const_cast<MutPtr>(ptr);
+    return index_iterator<Mutable, Fn>(mptr, iter.m_idx);
 }
 
-template<typename ContainerPtr>
-    requires(std::is_pointer_v<ContainerPtr>)
-constexpr auto
-launder_const_iterator(std::reverse_iterator<index_iterator<ContainerPtr>> iter) noexcept
+template<typename M, typename Fn>
+constexpr auto launder_const_iterator(std::reverse_iterator<index_iterator<M, Fn>> iter) noexcept
 {
     return std::make_reverse_iterator(launder_const_iterator(iter.base()));
 }

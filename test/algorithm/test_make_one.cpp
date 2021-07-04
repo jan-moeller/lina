@@ -31,5 +31,7 @@ using namespace lina;
 TEMPLATE_TEST_CASE("make_one", "[algorithm]", (basic_matrix<double, {3, 2}>), (rvec2f), (cvec4d))
 {
     TestType const m = make_one<TestType>();
-    for_each(m, [&](auto const& v) { CHECK(v == 1); });
+    CAPTURE(m);
+    auto const success = std::ranges::all_of(m, [](TestType::value_type v) { return v == 1; });
+    CHECK(success);
 }

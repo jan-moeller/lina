@@ -30,15 +30,14 @@ using namespace lina;
 
 TEMPLATE_TEST_CASE("make_diagonal", "[algorithm]", (mat2d), (basic_matrix<float, {2, 3}>))
 {
-    TestType const m = make_diagonal<TestType>(1., 2.);
-    for_each_index<TestType>(
-        [&m, d = 1](column_t c, row_t r) mutable
-        {
-            auto const v = element_at(m, c, r);
-            CAPTURE(c, r);
-            if (c == r)
-                CHECK(v == d++);
-            else
-                CHECK(v == 0);
-        });
+    TestType const m    = make_diagonal<TestType>(1., 2.);
+    auto           iter = make_row_major_begin(m);
+    auto const     end  = make_row_major_end(m);
+    for (; iter != end; ++iter)
+    {
+        if (iter.index().row == iter.index().col)
+            CHECK(*iter == iter.index().row + 1);
+        else
+            CHECK(*iter == 0);
+    }
 }

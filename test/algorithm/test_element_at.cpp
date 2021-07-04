@@ -34,8 +34,8 @@ TEMPLATE_TEST_CASE("element_at",
                    (basic_matrix<double, {3, 3}> const))
 {
     TestType m{1, 2, 3, 4, 5, 6, 7, 8, 9};
-    CHECK(element_at(m, 0, 0) == 1);
-    CHECK(element_at(m, 2, 0) == 3);
-    CHECK(element_at(m, 0, 2) == 7);
-    CHECK(element_at(m, 2, 2) == 9);
+    CHECK(element_at(m, {0, 0}) == 1);
+    CHECK(element_at(m, {2, 0}) == 3);
+    CHECK(element_at(m, {0, 2}) == 7);
+    CHECK(element_at(m, {2, 2}) == 9);
 }

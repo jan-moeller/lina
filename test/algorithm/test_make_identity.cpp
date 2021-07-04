@@ -30,18 +30,16 @@ using namespace lina;
 
 TEMPLATE_TEST_CASE("make_identity (success-test)", "[algorithm]", (mat2d), (mat3d), (mat4f))
 {
-    TestType const m = make_identity<TestType>();
-    CHECK(trace(m) == matrix_adapter<TestType>::dim.cols);
-    for_each_index<TestType>(
-        [&m](column_t c, row_t r)
-        {
-            auto const v = element_at(m, c, r);
-            CAPTURE(c, r);
-            if (c == r)
-                CHECK(v == 1);
-            else
-                CHECK(v == 0);
-        });
+    TestType const m    = make_identity<TestType>();
+    auto           iter = make_row_major_begin(m);
+    auto const     end  = make_row_major_end(m);
+    for (; iter != end; ++iter)
+    {
+        if (iter.index().row == iter.index().col)
+            CHECK(*iter == 1);
+        else
+            CHECK(*iter == 0);
+    }
 }
 
 TEMPLATE_TEST_CASE("make_identity (fail-test)",

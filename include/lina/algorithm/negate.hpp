@@ -25,9 +25,9 @@
 #ifndef LINA_NEGATE_HPP
 #define LINA_NEGATE_HPP
 
-#include "lina/algorithm/for_each.hpp"
 #include "lina/concepts/concepts.hpp"
 
+#include <algorithm>
 #include <utility>
 
 namespace lina
@@ -44,7 +44,7 @@ template<matrix M>
 constexpr auto negate(std::in_place_t, M& m) noexcept -> M&
 {
     using A = matrix_adapter<M>;
-    for_each(m, [](A::value_type& v) { v = -v; });
+    std::ranges::for_each(m, [](A::value_type& v) { v = -v; });
     return m;
 }
 } // namespace lina

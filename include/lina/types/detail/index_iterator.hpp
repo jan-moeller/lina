@@ -25,42 +25,57 @@
 #ifndef LINA_INDEX_ITERATOR_HPP
 #define LINA_INDEX_ITERATOR_HPP
 
+#include "lina/concepts/matrix.hpp"
+
+#include <concepts>
+#include <functional>
 #include <iterator>
 #include <type_traits>
 
 namespace lina::detail
 {
-template<typename ContainerPtr>
+using index_identity = decltype([](index_t i, dimension_t) { return i; });
+
+// clang-format off
+template<typename M, std::regular_invocable<index_t, dimension_t> Fn = index_identity>
+    requires std::convertible_to<std::invoke_result_t<Fn, index_t, dimension_t>, index_t>
+          or std::convertible_to<std::invoke_result_t<Fn, index_t, dimension_t>, index2_t>
+// clang-format on
 class index_iterator
 {
   private:
-    using container_t  = std::remove_pointer_t<ContainerPtr>;
-    using index_t      = container_t::size_type;
-    index_t      m_idx = 0;
-    ContainerPtr m_ptr = nullptr;
+    using matrix_t = std::remove_const_t<M>;
+    using ptr_t    = std::add_pointer_t<M>;
+    using index_t  = typename matrix_t::size_type;
+    index_t m_idx  = 0;
+    ptr_t   m_ptr  = nullptr;
 
-    static_assert(std::is_pointer_v<ContainerPtr>, "Template type must be pointer to container");
+    static_assert(!std::is_pointer_v<M> && !std::is_reference_v<M>,
+                  "Template type must be const-qualified matrix type");
 
   public:
     using iterator_category = std::random_access_iterator_tag;
-    using value_type        = container_t::value_type;
-    using difference_type   = container_t::difference_type;
-    using pointer           = std::conditional_t<std::is_const_v<container_t>,
-                                       typename container_t::const_pointer,
-                                       typename container_t::pointer>;
-    using reference         = std::conditional_t<std::is_const_v<container_t>,
-                                         typename container_t::const_reference,
-                                         typename container_t::reference>;
+    using value_type        = typename matrix_t::value_type;
+    using difference_type   = typename matrix_t::difference_type;
+    using pointer           = std::conditional_t<std::is_const_v<M>,
+                                       typename matrix_t::const_pointer,
+                                       typename matrix_t::pointer>;
+    using reference         = std::conditional_t<std::is_const_v<M>,
+                                         typename matrix_t::const_reference,
+                                         typename matrix_t::reference>;
 
     constexpr index_iterator() noexcept = default;
-    constexpr explicit index_iterator(ContainerPtr ptr, index_t idx = 0) noexcept
+    constexpr explicit index_iterator(ptr_t ptr, index_t idx = 0) noexcept
         : m_idx{idx}
         , m_ptr{ptr}
     {
     }
 
-    [[nodiscard]] constexpr auto container() const noexcept -> ContainerPtr { return m_ptr; }
-    [[nodiscard]] constexpr auto index() const noexcept -> index_t { return m_idx; }
+    [[nodiscard]] constexpr auto container() const noexcept -> ptr_t { return m_ptr; }
+    [[nodiscard]] constexpr auto index() const noexcept -> decltype(auto)
+    {
+        return Fn{}(m_idx, dim<matrix_t>);
+    }
 
     constexpr auto operator+=(difference_type n) noexcept -> index_iterator&
     {
@@ -116,7 +131,7 @@ class index_iterator
         return ++cp;
     }
 
-    constexpr auto operator*() const noexcept -> reference { return (*m_ptr)[m_idx]; }
+    constexpr auto operator*() const noexcept -> reference { return (*m_ptr)[index()]; }
     constexpr auto operator->() const noexcept -> pointer { return &**this; }
 
     constexpr auto operator[](difference_type n) const noexcept -> reference
@@ -126,6 +141,8 @@ class index_iterator
 
     constexpr auto        operator==(index_iterator const& rhs) const noexcept -> bool = default;
     friend constexpr auto operator<=>(index_iterator lhs, index_iterator rhs) noexcept = default;
+
+    friend constexpr auto launder_const_iterator<M, Fn>(index_iterator<M, Fn>) noexcept;
 };
 } // namespace lina::detail
 

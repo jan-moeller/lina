@@ -24,6 +24,7 @@
 
 #include "lina/lina.hpp"
 
+#include <algorithm>
 #include <catch2/catch.hpp>
 
 using namespace lina;
@@ -31,5 +32,7 @@ using namespace lina;
 TEMPLATE_TEST_CASE("make_zero", "[algorithm]", (basic_matrix<double, {3, 2}>), (rvec2f), (cvec4d))
 {
     TestType const m = make_zero<TestType>();
-    for_each(m, [&](auto const& v) { CHECK(v == 0); });
+    CAPTURE(m);
+    auto const success = std::ranges::all_of(m, [](TestType::value_type v) { return v == 0; });
+    CHECK(success);
 }

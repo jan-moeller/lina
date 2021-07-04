@@ -25,8 +25,8 @@
 #ifndef LINA_MATRIX_PRODUCT_COMPATIBLE_HPP
 #define LINA_MATRIX_PRODUCT_COMPATIBLE_HPP
 
+#include "lina/concepts/detail/shorthand.hpp"
 #include "lina/concepts/matrix.hpp"
-#include "utility.hpp"
 
 namespace lina::detail
 {

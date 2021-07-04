@@ -22,38 +22,43 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_FOR_EACH_HPP
-#define LINA_FOR_EACH_HPP
+#ifndef LINA_FOR_EACH_ZIPPED_HPP
+#define LINA_FOR_EACH_ZIPPED_HPP
 
-#include "for_each_index.hpp"
 #include "lina/concepts/concepts.hpp"
+#include "lina/types/row_major_iterator.hpp"
 
 #include <concepts>
 #include <utility>
 
 namespace lina
 {
-template<matrix M, std::invocable<typename matrix_adapter<M>::value_type const&> Fun>
-constexpr auto for_each(M const& m, Fun&& f) noexcept -> decltype(auto)
+template<typename Lhs,
+         typename... Rhs,
+         std::invocable<detail::value_type<std::remove_cvref_t<Lhs>>&,
+                        detail::value_type<std::remove_cvref_t<Rhs>>&...> Fn>
+    // clang-format off
+    requires (matrix<std::remove_cvref_t<Lhs>>
+         and (matrix<std::remove_cvref_t<Rhs>> and ...)
+         and same_dimension<std::remove_cvref_t<Lhs>, std::remove_cvref_t<Rhs>...>)
+// clang-format on
+constexpr auto for_each_zipped(Fn&& fn, Lhs&& lhs, Rhs&&... rhs) noexcept -> Fn
 {
-    using A = matrix_adapter<M>;
-    auto l  = [&m, fn = std::forward<Fun>(f)](index_t idx) mutable
+    auto&& internal_fn = [&](auto& lhs_iter, auto&... rhs_iter)
     {
-        std::forward<Fun>(fn)(A::get(m, idx));
+        fn(*lhs_iter, *rhs_iter...);
+        ++lhs_iter;
+        (++rhs_iter, ...);
     };
-    return for_each_index<M>(l);
-}
-
-template<matrix M, std::invocable<typename matrix_adapter<M>::value_type&> Fun>
-constexpr auto for_each(M& m, Fun&& f) noexcept -> decltype(auto)
-{
-    using A = matrix_adapter<M>;
-    auto l  = [&m, fn = std::forward<Fun>(f)](index_t idx) mutable
-    {
-        std::forward<Fun>(fn)(A::get(m, idx));
-    };
-    return for_each_index<M>(l);
+    // TODO: row-major order might not be optimal in all cases. Introduce mechanism to choose
+    // optimal order in terms of the arguments?
+    auto       lhs_iter = make_row_major_begin(lhs);
+    auto const lhs_end  = make_row_major_end(lhs);
+    auto       iters    = std::make_tuple(std::ref(lhs_iter), make_row_major_begin(rhs)...);
+    while (lhs_iter != lhs_end)
+        std::apply(internal_fn, iters);
+    return std::forward<Fn>(fn);
 }
 } // namespace lina
 
-#endif // LINA_FOR_EACH_HPP
+#endif // LINA_FOR_EACH_ZIPPED_HPP

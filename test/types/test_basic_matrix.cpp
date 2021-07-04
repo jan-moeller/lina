@@ -40,7 +40,7 @@ using test_types = std::tuple<basic_matrix<double, {0, 0}>,
                               basic_matrix<double, {5, 1}>,
                               basic_matrix<double, {4, 4}>>;
 
-TEMPLATE_LIST_TEST_CASE("Matrix properties", "[storage]", test_types)
+TEMPLATE_LIST_TEST_CASE("Matrix properties", "[types]", test_types)
 {
     SECTION("Matrix is an aggregate")
     {
@@ -128,24 +128,33 @@ TEMPLATE_LIST_TEST_CASE("Matrix properties", "[storage]", test_types)
         CHECK(std::random_access_iterator<typename TestType::const_reverse_iterator>);
         CHECK(std::random_access_iterator<typename TestType::reverse_iterator>);
     }
+    SECTION("Matrix fulfills the native_matrix concept")
+    {
+        static_assert(detail::native_matrix<TestType>);
+        CHECK(detail::native_matrix<TestType>);
+    }
     SECTION("Matrix fulfills the matrix concept")
     {
         static_assert(matrix<TestType>);
         CHECK(matrix<TestType>);
     }
+    SECTION("Matrix fulfills the random_access_range concept")
+    {
+        static_assert(std::ranges::random_access_range<TestType>);
+        CHECK(std::ranges::random_access_range<TestType>);
+    }
 }
 
 TEMPLATE_LIST_TEST_CASE("Matrix has static members that report rows, columns and total elements",
-                        "[storage]",
+                        "[types]",
                         test_types)
 {
     static_assert(TestType::size() == TestType::dim.rows * TestType::dim.cols);
     CHECK(TestType::size() == TestType::dim.rows * TestType::dim.cols);
 }
 
-TEMPLATE_LIST_TEST_CASE("Can store and retrieve elements from matrix", "[storage]", test_types)
+TEMPLATE_LIST_TEST_CASE("Can store and retrieve elements from matrix", "[types]", test_types)
 {
-    using index_t = typename TestType::size_type;
     SECTION("forward")
     {
         TestType m;
@@ -190,7 +199,7 @@ TEMPLATE_LIST_TEST_CASE("Can store and retrieve elements from matrix", "[storage
     }
 }
 
-TEST_CASE("Matrices can be compared for equality", "[storage]")
+TEST_CASE("Matrices can be compared for equality", "[types]")
 {
     basic_matrix<double, {3, 3}> m1{1, 2, 3, 4, 5, 6, 7, 8, 9};
     basic_matrix<double, {3, 3}> m2{1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -198,4 +207,84 @@ TEST_CASE("Matrices can be compared for equality", "[storage]")
 
     CHECK(m1 == m2);
     CHECK(m1 != m3);
+}
+
+TEMPLATE_LIST_TEST_CASE("Can read & write via single index", "[types]", test_types)
+{
+    SECTION("const")
+    {
+        TestType const m = []
+        {
+            TestType mat;
+            std::iota(mat.begin(), mat.end(), 0);
+            return mat;
+        }();
+        CAPTURE(m);
+        for (index_t i = 0; i < TestType::size(); ++i)
+        {
+            CAPTURE(i);
+            CHECK(m[i] == i);
+        }
+    }
+    SECTION("mutable")
+    {
+        TestType m = []
+        {
+            TestType mat;
+            std::iota(mat.begin(), mat.end(), 0);
+            return mat;
+        }();
+        CAPTURE(m);
+        for (index_t i = 0; i < TestType::size(); ++i)
+        {
+            CAPTURE(i);
+            CHECK(m[i] == i);
+            m[i] = 0;
+        }
+        CHECK(std::all_of(m.begin(), m.end(), [](auto n) { return n == 0; }));
+    }
+}
+
+TEMPLATE_LIST_TEST_CASE("Can read & write via row & col index", "[types]", test_types)
+{
+    SECTION("const")
+    {
+        TestType const m = []
+        {
+            TestType mat;
+            std::iota(mat.begin(), mat.end(), 0);
+            return mat;
+        }();
+        CAPTURE(m);
+        index_t i = 0;
+        for (row_t r = 0; r < TestType::dim.rows; ++r)
+        {
+            for (column_t c = 0; c < TestType::dim.cols; ++i, ++c)
+            {
+                CAPTURE(c, r);
+                CHECK(m[{c, r}] == i);
+            }
+        }
+    }
+    SECTION("mutable")
+    {
+        TestType m = []
+        {
+            TestType mat;
+            std::iota(mat.begin(), mat.end(), 0);
+            return mat;
+        }();
+        CAPTURE(m);
+        index_t i = 0;
+        for (row_t r = 0; r < TestType::dim.rows; ++r)
+        {
+            for (column_t c = 0; c < TestType::dim.cols; ++i, ++c)
+            {
+                CAPTURE(c, r);
+                CHECK(m[{c, r}] == i);
+                m[{c, r}] = 0;
+            }
+        }
+        CHECK(std::all_of(m.begin(), m.end(), [](auto n) { return n == 0; }));
+    }
 }

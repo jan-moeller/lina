@@ -25,11 +25,12 @@
 #ifndef LINA_SCALAR_DIVISION_HPP
 #define LINA_SCALAR_DIVISION_HPP
 
-#include "detail/utility.hpp"
-#include "for_each.hpp"
 #include "lina/concepts/concepts.hpp"
-#include "lina/storage/basic_matrix.hpp"
+#include "lina/concepts/detail/shorthand.hpp"
+#include "lina/types/basic_matrix.hpp"
+#include "lina/types/native_order_iterator.hpp"
 
+#include <algorithm>
 #include <utility>
 
 namespace lina
@@ -55,14 +56,22 @@ constexpr auto scalar_division(Lhs const& lhs, Rhs const& rhs) noexcept -> matri
 template<matrix Lhs, typename Rhs>
 constexpr auto scalar_division(std::in_place_t, Lhs& lhs, Rhs const& rhs) noexcept -> Lhs&
 {
-    for_each(lhs, [&](detail::value_type<Lhs>& v) { v /= rhs; });
+    auto&& division = [&](auto& val)
+    {
+        val /= rhs;
+    };
+    std::ranges::for_each(lhs, division);
     return lhs;
 }
 
 template<typename Lhs, matrix Rhs>
 constexpr auto scalar_division(std::in_place_t, Lhs const& lhs, Rhs& rhs) noexcept -> Rhs&
 {
-    for_each(rhs, [&](detail::value_type<Rhs>& v) { v = lhs / v; });
+    auto&& division = [&](auto& val)
+    {
+        val = lhs / val;
+    };
+    std::ranges::for_each(rhs, division);
     return rhs;
 }
 } // namespace lina

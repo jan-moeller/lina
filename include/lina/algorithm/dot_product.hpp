@@ -26,7 +26,6 @@
 #define LINA_DOT_PRODUCT_HPP
 
 #include "detail/dot_product_compatible.hpp"
-#include "detail/utility.hpp"
 #include "lina/algorithm/element_at.hpp"
 #include "lina/algorithm/matrix_product.hpp"
 #include "lina/concepts/vector.hpp"
@@ -38,8 +37,7 @@ namespace lina
 {
 template<vector Lhs, vector Rhs>
     requires(detail::dot_product_compatible_v<Lhs, Rhs>)
-constexpr auto dot_product(Lhs const& lhs, Rhs const& rhs) noexcept
-    -> std::common_type_t<detail::value_type<Lhs>, detail::value_type<Rhs>>
+constexpr auto dot_product(Lhs const& lhs, Rhs const& rhs) noexcept -> decltype(auto)
 {
     return element_at(matrix_product(lhs, rhs), 0);
 }

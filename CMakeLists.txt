@@ -31,12 +31,9 @@ add_library(lina
         include/lina/algorithm/detail/lazy_matrix_product_evaluator.hpp
         include/lina/algorithm/detail/matrix_product_compatible.hpp
         include/lina/algorithm/detail/matrix_product_result_type.hpp
-        include/lina/algorithm/detail/utility.hpp
         include/lina/algorithm/dot_product.hpp
         include/lina/algorithm/element_at.hpp
-        include/lina/algorithm/fill.hpp
-        include/lina/algorithm/for_each.hpp
-        include/lina/algorithm/for_each_index.hpp
+        include/lina/algorithm/for_each_zipped.hpp
         include/lina/algorithm/hadamard_division.hpp
         include/lina/algorithm/hadamard_product.hpp
         include/lina/algorithm/make_diagonal.hpp
@@ -51,18 +48,24 @@ add_library(lina
         include/lina/algorithm/subtract.hpp
         include/lina/algorithm/sum.hpp
         include/lina/algorithm/trace.hpp
+        include/lina/concepts/concept_types.hpp
         include/lina/concepts/concepts.hpp
+        include/lina/concepts/detail/native_matrix.hpp
+        include/lina/concepts/detail/shorthand.hpp
         include/lina/concepts/matrix.hpp
-        include/lina/concepts/matrix_dimension.hpp
+        include/lina/concepts/matrix_adapter.hpp
         include/lina/concepts/same_dimension.hpp
         include/lina/concepts/square_matrix.hpp
-        include/lina/concepts/types.hpp
         include/lina/concepts/vector.hpp
         include/lina/lina.hpp
-        include/lina/storage/basic_matrix.hpp
-        include/lina/storage/detail/coordinate_index_conversion.hpp
-        include/lina/storage/detail/index_iterator.hpp
-        include/lina/storage/detail/launder_const_iterator.hpp
+        include/lina/types/basic_matrix.hpp
+        include/lina/types/column_major_iterator.hpp
+        include/lina/types/detail/coordinate_index_conversion.hpp
+        include/lina/types/detail/index_iterator.hpp
+        include/lina/types/detail/launder_const_iterator.hpp
+        include/lina/types/native_order_iterator.hpp
+        include/lina/types/row_major_iterator.hpp
+        include/lina/types/types.hpp
         )
 set_target_properties(lina PROPERTIES
         CXX_STANDARD 20

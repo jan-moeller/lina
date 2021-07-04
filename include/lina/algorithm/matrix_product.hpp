@@ -39,8 +39,8 @@ namespace lina
 {
 template<matrix... Ms>
     requires detail::matrix_product_compatible_v<Ms...>
-constexpr auto matrix_product(Ms const&... args) noexcept
-    -> detail::matrix_product_result_type<Ms...>::type
+constexpr auto matrix_product(Ms const&... args) noexcept ->
+    typename detail::matrix_product_result_type<Ms...>::type
 {
     using result_t = typename detail::matrix_product_result_type<Ms...>::type;
 
@@ -49,14 +49,15 @@ constexpr auto matrix_product(Ms const&... args) noexcept
     for (row_t row = 0; row < detail::rows<result_t>; ++row)
     {
         for (column_t col = 0; col < detail::cols<result_t>; ++col)
-            element_at(result, col, row) = evaluator(col, row);
+            element_at(result, {col, row}) = evaluator(col, row);
     }
     return result;
 }
 
 template<matrix M, matrix... Ms>
-    requires detail::matrix_product_compatible_v<M, Ms...> and
-             same_dimension<M, typename detail::matrix_product_result_type<M, Ms...>::type>
+    requires detail::matrix_product_compatible_v<M, Ms...> and same_dimension<
+        M,
+        typename detail::matrix_product_result_type<M, Ms...>::type>
 constexpr auto matrix_product(std::in_place_t, M& m, Ms const&... args) noexcept -> M&
 {
     detail::lazy_matrix_product_evaluator<M, Ms...> evaluator{m, args...};
@@ -66,7 +67,7 @@ constexpr auto matrix_product(std::in_place_t, M& m, Ms const&... args) noexcept
         for (column_t col = 0; col < detail::cols<M>; ++col)
             tmp[col] = evaluator(col, row);
         for (column_t col = 0; col < detail::cols<M>; ++col)
-            element_at(m, col, row) = tmp[col];
+            element_at(m, {col, row}) = tmp[col];
     }
     return m;
 }

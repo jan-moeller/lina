@@ -25,27 +25,26 @@
 #ifndef LINA_MATRIX_HPP
 #define LINA_MATRIX_HPP
 
-#include "matrix_dimension.hpp"
+#include "concept_types.hpp"
+#include "detail/native_matrix.hpp"
+#include "detail/shorthand.hpp"
+#include "matrix_adapter.hpp"
 
 #include <concepts>
 
 namespace lina
 {
 template<typename M>
-struct matrix_adapter;
-
-template<typename M>
-concept matrix = requires(M m, M const& mc, M& mm)
+concept matrix = detail::native_matrix<M> or requires(M const& mc, M& mm)
 {
-    std::copyable<M>;
-    typename matrix_adapter<M>::value_type;
-    { matrix_adapter<M>::dim } -> std::convertible_to<matrix_dimension>;
-    { matrix_adapter<M>::get(mc, std::declval<index_t>()) }
-        -> std::convertible_to<typename matrix_adapter<M>::value_type>;
-    { matrix_adapter<M>::get(mm, std::declval<index_t>()) }
-        -> std::convertible_to<typename matrix_adapter<M>::value_type&>;
-    { matrix_adapter<M>::index(mc, std::declval<column_t>(), std::declval<row_t>()) }
-        -> std::convertible_to<index_t>;
+    // clang-format off
+    typename detail::value_type<M>;
+    { detail::dim<M> } -> std::convertible_to<dimension_t>;
+    { detail::ma<M>::get(mc, std::declval<index_t>()) } -> std::convertible_to<detail::value_type<M> const&>;
+    { detail::ma<M>::get(mc, std::declval<index2_t>()) } -> std::convertible_to<detail::value_type<M> const&>;
+    { detail::ma<M>::get(mm, std::declval<index_t>()) } -> std::convertible_to<detail::value_type<M>&>;
+    { detail::ma<M>::get(mm, std::declval<index2_t>()) } -> std::convertible_to<detail::value_type<M>&>;
+    // clang-format on
 };
 } // namespace lina
 

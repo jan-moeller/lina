@@ -26,9 +26,9 @@
 #define LINA_LAZY_MATRIX_PRODUCT_EVALUATOR_HPP
 
 #include "lina/algorithm/element_at.hpp"
+#include "lina/concepts/detail/shorthand.hpp"
 #include "lina/concepts/matrix.hpp"
 #include "matrix_product_result_type.hpp"
-#include "utility.hpp"
 
 namespace lina::detail
 {
@@ -45,7 +45,7 @@ struct lazy_matrix_product_evaluator<M>
     }
     constexpr auto operator()(column_t col, row_t row) const noexcept
     {
-        return element_at(m_mat, col, row);
+        return element_at(m_mat, {col, row});
     }
 
     M const& m_mat;
@@ -65,7 +65,7 @@ struct lazy_matrix_product_evaluator<Lhs, Rhs...>
         using value_t = value_type<result_type>;
         value_t sum   = 0;
         for (row_t r = 0; r < cols<Lhs>; ++r)
-            sum += element_at(m_lhs, r, row) * m_rhs(col, r);
+            sum += element_at(m_lhs, {r, row}) * m_rhs(col, r);
         return sum;
     }
 

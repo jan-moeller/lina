@@ -38,7 +38,7 @@ constexpr auto trace(M const& m) -> matrix_adapter<M>::value_type
 
     typename A::value_type t = 0;
     for (row_t i = 0; i < dim.rows; ++i)
-        t += element_at(m, i, i);
+        t += element_at(m, {i, i});
     return t;
 }
 } // namespace lina

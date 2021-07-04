@@ -25,11 +25,12 @@
 #ifndef LINA_HADAMARD_DIVISION_HPP
 #define LINA_HADAMARD_DIVISION_HPP
 
-#include "detail/utility.hpp"
-#include "for_each_index.hpp"
+#include "lina/algorithm/for_each_zipped.hpp"
 #include "lina/concepts/concepts.hpp"
-#include "lina/storage/basic_matrix.hpp"
+#include "lina/concepts/detail/shorthand.hpp"
+#include "lina/types/basic_matrix.hpp"
 
+#include <tuple>
 #include <utility>
 
 namespace lina
@@ -48,11 +49,11 @@ template<matrix Lhs, matrix... Rhs>
     requires(same_dimension<Lhs, Rhs...>)
 constexpr auto hadamard_division(std::in_place_t, Lhs& lhs, Rhs const&... rhs) noexcept -> Lhs&
 {
-    auto&& division = [&](index_t i)
+    auto&& division = [&](auto& lhs, auto const&... rhs)
     {
-        matrix_adapter<Lhs>::get(lhs, i) /= (matrix_adapter<Rhs>::get(rhs, i) * ...);
+        lhs /= (rhs * ...);
     };
-    for_each_index<Lhs>(division);
+    for_each_zipped(division, lhs, rhs...);
     return lhs;
 }
 } // namespace lina

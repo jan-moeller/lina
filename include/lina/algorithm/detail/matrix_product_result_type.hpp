@@ -25,9 +25,9 @@
 #ifndef LINA_MATRIX_PRODUCT_RESULT_TYPE_HPP
 #define LINA_MATRIX_PRODUCT_RESULT_TYPE_HPP
 
+#include "lina/concepts/detail/shorthand.hpp"
 #include "lina/concepts/matrix.hpp"
-#include "lina/storage/basic_matrix.hpp"
-#include "utility.hpp"
+#include "lina/types/basic_matrix.hpp"
 
 #include <type_traits>
 

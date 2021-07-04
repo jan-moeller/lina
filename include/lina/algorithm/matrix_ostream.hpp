@@ -42,9 +42,9 @@ auto operator<<(std::ostream& os, M const& m) -> std::ostream&
     {
         for (row_t y = 0; y < dim.rows; ++y)
         {
-            os << m(0, y);
+            os << element_at(m, {0, y});
             for (column_t x = 1; x < dim.cols; ++x)
-                os << ", " << element_at(m, x, y);
+                os << ", " << element_at(m, {x, y});
             if (y < dim.rows - 1)
                 os << "; ";
         }

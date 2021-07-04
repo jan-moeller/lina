@@ -25,9 +25,9 @@
 #ifndef LINA_SUM_HPP
 #define LINA_SUM_HPP
 
-#include "for_each_index.hpp"
+#include "lina/algorithm/for_each_zipped.hpp"
 #include "lina/concepts/concepts.hpp"
-#include "lina/storage/basic_matrix.hpp"
+#include "lina/types/basic_matrix.hpp"
 
 #include <utility>
 
@@ -48,11 +48,11 @@ template<matrix Lhs, matrix... Rhs>
     requires(same_dimension<Lhs, Rhs...>)
 constexpr auto sum(std::in_place_t, Lhs& lhs, Rhs const&... rhs) noexcept -> Lhs&
 {
-    auto&& accumulate = [&](index_t i)
+    auto&& accumulate = [&](auto& lhs, auto const&... rhs)
     {
-        matrix_adapter<Lhs>::get(lhs, i) += (matrix_adapter<Rhs>::get(rhs, i) + ...);
+        lhs += (rhs + ...);
     };
-    for_each_index<Lhs>(accumulate);
+    for_each_zipped(accumulate, lhs, rhs...);
     return lhs;
 }
 } // namespace lina

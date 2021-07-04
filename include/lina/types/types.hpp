@@ -22,33 +22,12 @@
 // SOFTWARE.
 //
 
-#include "lina/lina.hpp"
+#ifndef LINA_TYPES_HPP
+#define LINA_TYPES_HPP
 
-#include <catch2/catch.hpp>
+#include "basic_matrix.hpp"
+#include "column_major_iterator.hpp"
+#include "native_order_iterator.hpp"
+#include "row_major_iterator.hpp"
 
-using namespace lina;
-
-TEMPLATE_TEST_CASE("for_each_index",
-                   "[algorithm]",
-                   (basic_matrix<double, {3, 3}>),
-                   (basic_matrix<double, {3, 3}> const))
-{
-    using M = std::remove_cvref_t<TestType>;
-    SECTION("any order")
-    {
-        TestType m{1, 2, 3, 4, 5, 6, 7, 8, 9};
-        for_each_index<M>([&, d = 1.](index_t i) mutable { CHECK(m[i] == d++); });
-    }
-    SECTION("row-major")
-    {
-        TestType m{1, 2, 3, 4, 5, 6, 7, 8, 9};
-        for_each_index<M, traversal_order::row_major>([&, d = 1.](column_t c, row_t r) mutable
-                                                      { CHECK(m(c, r) == d++); });
-    }
-    SECTION("column-major")
-    {
-        TestType m{1, 4, 7, 2, 5, 8, 3, 6, 9};
-        for_each_index<M, traversal_order::column_major>(
-            [&, d = 1.](column_t c, row_t r) mutable { CHECK(m(c, r) == d++); });
-    }
-}
+#endif // LINA_TYPES_HPP

@@ -45,7 +45,7 @@ constexpr auto make_diagonal(Us... values) noexcept -> M
 
     M m = make_zero<M>();
     for (column_t i = 0; i < s; ++i)
-        element_at(m, i, i) = diag[i];
+        element_at(m, {i, i}) = diag[i];
     return m;
 }
 } // namespace lina

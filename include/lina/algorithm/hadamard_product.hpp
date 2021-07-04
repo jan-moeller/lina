@@ -25,10 +25,10 @@
 #ifndef LINA_HADAMARD_PRODUCT_HPP
 #define LINA_HADAMARD_PRODUCT_HPP
 
-#include "detail/utility.hpp"
-#include "for_each_index.hpp"
+#include "lina/algorithm/for_each_zipped.hpp"
 #include "lina/concepts/concepts.hpp"
-#include "lina/storage/basic_matrix.hpp"
+#include "lina/concepts/detail/shorthand.hpp"
+#include "lina/types/basic_matrix.hpp"
 
 #include <utility>
 
@@ -48,11 +48,11 @@ template<matrix Lhs, matrix... Rhs>
     requires(same_dimension<Lhs, Rhs...>)
 constexpr auto hadamard_product(std::in_place_t, Lhs& lhs, Rhs const&... rhs) noexcept -> Lhs&
 {
-    auto&& product = [&](index_t i)
+    auto&& product = [&](auto& lhs, auto const&... rhs)
     {
-        matrix_adapter<Lhs>::get(lhs, i) *= (matrix_adapter<Rhs>::get(rhs, i) * ...);
+        lhs *= (rhs * ...);
     };
-    for_each_index<Lhs>(product);
+    for_each_zipped(product, lhs, rhs...);
     return lhs;
 }
 } // namespace lina

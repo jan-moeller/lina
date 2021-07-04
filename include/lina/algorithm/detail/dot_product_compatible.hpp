@@ -25,15 +25,13 @@
 #ifndef LINA_DOT_PRODUCT_COMPATIBLE_HPP
 #define LINA_DOT_PRODUCT_COMPATIBLE_HPP
 
+#include "lina/concepts/detail/shorthand.hpp"
 #include "lina/concepts/vector.hpp"
-#include "utility.hpp"
 
 namespace lina::detail
 {
 template<vector Lhs, vector Rhs>
-constexpr bool
-    dot_product_compatible_v = detail::cols<Lhs> == detail::rows<Rhs>&& detail::rows<Lhs> == 1
-                               && detail::cols<Rhs> == 1;
+constexpr bool dot_product_compatible_v = cols<Lhs> == rows<Rhs>&& rows<Lhs> == 1 && cols<Rhs> == 1;
 } // namespace lina::detail
 
 #endif // LINA_DOT_PRODUCT_COMPATIBLE_HPP

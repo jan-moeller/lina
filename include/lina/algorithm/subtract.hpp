@@ -25,11 +25,10 @@
 #ifndef LINA_SUBTRACT_HPP
 #define LINA_SUBTRACT_HPP
 
-#include "detail/utility.hpp"
-#include "for_each_index.hpp"
-#include "lina/algorithm/element_at.hpp"
+#include "lina/algorithm/for_each_zipped.hpp"
 #include "lina/concepts/concepts.hpp"
-#include "lina/storage/basic_matrix.hpp"
+#include "lina/concepts/detail/shorthand.hpp"
+#include "lina/types/basic_matrix.hpp"
 
 #include <utility>
 
@@ -49,11 +48,11 @@ template<matrix Lhs, matrix... Rhs>
     requires(same_dimension<Lhs, Rhs...>)
 constexpr auto subtract(std::in_place_t, Lhs& lhs, Rhs const&... rhs) noexcept -> Lhs&
 {
-    auto&& accumulate = [&](index_t i)
+    auto&& subtract_fn = [&](auto& lhs, auto const&... rhs)
     {
-        element_at(lhs, i) -= (element_at(rhs, i) + ...);
+        lhs -= (rhs + ...);
     };
-    for_each_index<Lhs>(accumulate);
+    for_each_zipped(subtract_fn, lhs, rhs...);
     return lhs;
 }
 } // namespace lina

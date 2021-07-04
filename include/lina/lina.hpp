@@ -27,6 +27,6 @@
 
 #include "lina/algorithm/algorithm.hpp"
 #include "lina/concepts/concepts.hpp"
-#include "lina/storage/basic_matrix.hpp"
+#include "lina/types/types.hpp"
 
 #endif // LINA_LINA_HPP

@@ -22,17 +22,13 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_TYPES_HPP
-#define LINA_TYPES_HPP
-
-#include <cstdint>
+#ifndef LINA_MATRIX_ADAPTER_HPP
+#define LINA_MATRIX_ADAPTER_HPP
 
 namespace lina
 {
-using column_t     = std::uint8_t;
-using row_t        = std::uint8_t;
-using index_t      = std::uint16_t;
-using difference_t = std::int16_t;
+template<typename M>
+struct matrix_adapter;
 } // namespace lina
 
-#endif // LINA_TYPES_HPP
+#endif // LINA_MATRIX_ADAPTER_HPP

@@ -22,21 +22,29 @@
 // SOFTWARE.
 //
 
-#ifndef LINA_MATRIX_DIMENSION_HPP
-#define LINA_MATRIX_DIMENSION_HPP
+#ifndef LINA_CONCEPT_TYPES_HPP
+#define LINA_CONCEPT_TYPES_HPP
 
-#include "types.hpp"
+#include <cstdint>
 
 namespace lina
 {
-struct matrix_dimension
+using column_t     = std::uint8_t;
+using row_t        = std::uint8_t;
+using index_t      = std::uint16_t;
+using difference_t = std::int16_t;
+struct index2_t
 {
-    friend constexpr auto operator==(matrix_dimension, matrix_dimension) noexcept -> bool = default;
-
-    column_t cols;
-    row_t    rows;
+    friend constexpr auto operator==(index2_t, index2_t) noexcept -> bool = default;
+    column_t              col;
+    row_t                 row;
 };
-
+struct dimension_t
+{
+    friend constexpr auto operator==(dimension_t, dimension_t) noexcept -> bool = default;
+    column_t              cols;
+    row_t                 rows;
+};
 } // namespace lina
 
-#endif // LINA_MATRIX_DIMENSION_HPP
+#endif // LINA_CONCEPT_TYPES_HPP

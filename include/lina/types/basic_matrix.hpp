@@ -26,9 +26,9 @@
 #define LINA_BASIC_MATRIX_HPP
 
 #include "detail/launder_const_iterator.hpp"
+#include "lina/concepts/concept_types.hpp"
 #include "lina/concepts/matrix.hpp"
-#include "lina/concepts/types.hpp"
-#include "lina/storage/detail/coordinate_index_conversion.hpp"
+#include "lina/types/detail/coordinate_index_conversion.hpp"
 
 #include <array>
 #include <iterator>
@@ -48,8 +48,8 @@
     using iterator       = value_type*;                                                            \
     using const_iterator = value_type const*;
 #define LINA_GEN_INDEX_ITER_TYPEDEFS(...)                                                          \
-    using iterator       = detail::index_iterator<__VA_ARGS__*>;                                   \
-    using const_iterator = detail::index_iterator<__VA_ARGS__ const*>;
+    using iterator       = detail::index_iterator<__VA_ARGS__>;                                    \
+    using const_iterator = detail::index_iterator<__VA_ARGS__ const>;
 #define LINA_GEN_REVERSE_ITER_TYPEDEFS                                                             \
     using reverse_iterator       = std::reverse_iterator<iterator>;                                \
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
@@ -75,20 +75,20 @@
     }                                                                                              \
     constexpr auto crend() const noexcept->const_reverse_iterator { return rend(); }
 #define LINA_GEN_2D_ACCESSOR                                                                       \
-    constexpr auto operator()(size_type col, size_type row)->reference                             \
+    constexpr auto operator[](index2_t idx) noexcept->reference                                    \
     {                                                                                              \
-        return (*this)[detail::row_major_index(col, row, dim)];                                    \
+        return (*this)[detail::row_major_to_index(idx, dim)];                                      \
     }                                                                                              \
-    constexpr auto operator()(size_type col, size_type row) const->const_reference                 \
+    constexpr auto operator[](index2_t idx) const noexcept->const_reference                        \
     {                                                                                              \
-        return (*this)[detail::row_major_index(col, row, dim)];                                    \
+        return (*this)[detail::row_major_to_index(idx, dim)];                                      \
     }
 #define LINA_GEN_SIZE_FUN                                                                          \
     constexpr static auto size() noexcept->size_type { return dim.cols * dim.rows; }
 
 namespace lina
 {
-template<typename T, matrix_dimension E>
+template<typename T, dimension_t Dim>
 struct basic_matrix
 {
     LINA_GEN_COMMON_TYPEDEFS(T)
@@ -114,12 +114,12 @@ struct basic_matrix
     LINA_GEN_ITER_FUNS
     LINA_GEN_SIZE_FUN
 
-    std::array<value_type, E.cols * E.rows> storage;
-    static constexpr matrix_dimension       dim = E;
+    std::array<value_type, Dim.cols * Dim.rows> storage;
+    static constexpr dimension_t                dim = Dim;
 };
 
 template<typename T>
-struct basic_matrix<T, matrix_dimension{.cols = 1, .rows = 1}>
+struct basic_matrix<T, dimension_t{.cols = 1, .rows = 1}>
 {
     LINA_GEN_COMMON_TYPEDEFS(T)
     LINA_GEN_CONTIGUOUS_ITER_TYPEDEFS
@@ -147,8 +147,8 @@ struct basic_matrix<T, matrix_dimension{.cols = 1, .rows = 1}>
     LINA_GEN_ITER_FUNS
     LINA_GEN_SIZE_FUN
 
-    value_type                        x;
-    static constexpr matrix_dimension dim = matrix_dimension{.cols = 1, .rows = 1};
+    value_type                   x;
+    static constexpr dimension_t dim = dimension_t{.cols = 1, .rows = 1};
 };
 
 #define LINA_GEN_VECTOR_STORAGE_LOOKUP3(NAME) &basic_matrix::NAME
@@ -172,10 +172,10 @@ struct basic_matrix<T, matrix_dimension{.cols = 1, .rows = 1}>
 
 #define LINA_GEN_VECTOR_SPECIALIZATION(COLS, ROWS, ...)                                            \
     template<typename T>                                                                           \
-    struct basic_matrix<T, matrix_dimension{.cols = COLS, .rows = ROWS}>                           \
+    struct basic_matrix<T, dimension_t{.cols = COLS, .rows = ROWS}>                                \
     {                                                                                              \
       private:                                                                                     \
-        using self_t = basic_matrix<T, matrix_dimension{.cols = COLS, .rows = ROWS}>;              \
+        using self_t = basic_matrix<T, dimension_t{.cols = COLS, .rows = ROWS}>;                   \
                                                                                                    \
       public:                                                                                      \
         LINA_GEN_COMMON_TYPEDEFS(T)                                                                \
@@ -206,7 +206,7 @@ struct basic_matrix<T, matrix_dimension{.cols = 1, .rows = 1}>
         LINA_GEN_ITER_FUNS                                                                         \
         LINA_GEN_SIZE_FUN                                                                          \
         LINA_GEN_VECTOR_STORAGE_MEMBER(__VA_ARGS__)                                                \
-        static constexpr matrix_dimension dim = matrix_dimension{.cols = COLS, .rows = ROWS};      \
+        static constexpr dimension_t dim = dimension_t{.cols = COLS, .rows = ROWS};                \
                                                                                                    \
       private:                                                                                     \
         constexpr static value_type self_t::*const lookup[]{                                       \
@@ -220,34 +220,12 @@ LINA_GEN_VECTOR_SPECIALIZATION(3, 1, x, y, z)
 LINA_GEN_VECTOR_SPECIALIZATION(1, 4, x, y, z, w)
 LINA_GEN_VECTOR_SPECIALIZATION(4, 1, x, y, z, w)
 
-template<typename T, matrix_dimension E>
+template<typename T, dimension_t E>
 constexpr auto operator==(basic_matrix<T, E> const& lhs, basic_matrix<T, E> const& rhs) noexcept
     -> bool
 {
     return std::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
-
-template<typename T, matrix_dimension E>
-struct matrix_adapter<basic_matrix<T, E>>
-{
-    using value_type = basic_matrix<T, E>::value_type;
-
-    static constexpr matrix_dimension dim = E;
-
-    constexpr static auto get(basic_matrix<T, E> const& m, index_t idx) noexcept -> decltype(auto)
-    {
-        return m[idx];
-    }
-    constexpr static auto get(basic_matrix<T, E>& m, index_t idx) noexcept -> decltype(auto)
-    {
-        return m[idx];
-    }
-    constexpr static auto index(basic_matrix<T, E> const& m, column_t c, row_t r) noexcept
-        -> decltype(auto)
-    {
-        return detail::row_major_index(c, r, m.dim);
-    }
-};
 
 template<typename T, column_t C>
     requires(C > 0)
@@ -304,7 +282,7 @@ using mat2f = mat2<float>;
 using mat3f = mat3<float>;
 using mat4f = mat4<float>;
 
-}; // namespace lina
+} // namespace lina
 
 #undef LINA_GEN_COMMON_TYPEDEFS
 #undef LINA_GEN_CONTIGUOUS_ITER_TYPEDEFS

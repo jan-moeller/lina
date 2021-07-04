@@ -27,9 +27,6 @@
 
 #include "dot_product.hpp"
 #include "element_at.hpp"
-#include "fill.hpp"
-#include "for_each.hpp"
-#include "for_each_index.hpp"
 #include "hadamard_division.hpp"
 #include "hadamard_product.hpp"
 #include "make_diagonal.hpp"

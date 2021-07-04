@@ -25,8 +25,9 @@
 #ifndef LINA_MAKE_ZERO_HPP
 #define LINA_MAKE_ZERO_HPP
 
-#include "lina/algorithm/fill.hpp"
 #include "lina/concepts/concepts.hpp"
+
+#include <algorithm>
 
 namespace lina
 {
@@ -34,7 +35,7 @@ template<matrix M>
 constexpr auto make_zero() noexcept -> M
 {
     M m;
-    fill(m, 0);
+    std::ranges::fill(m, detail::value_type<M>{0});
     return m;
 }
 } // namespace lina

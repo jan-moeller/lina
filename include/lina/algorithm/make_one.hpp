@@ -25,8 +25,9 @@
 #ifndef LINA_MAKE_ONE_HPP
 #define LINA_MAKE_ONE_HPP
 
-#include "lina/algorithm/fill.hpp"
 #include "lina/concepts/concepts.hpp"
+
+#include <algorithm>
 
 namespace lina
 {
@@ -34,7 +35,7 @@ template<matrix M>
 constexpr auto make_one() noexcept -> M
 {
     M m;
-    fill(m, 1);
+    std::ranges::fill(m, detail::value_type<M>{1});
     return m;
 }
 } // namespace lina

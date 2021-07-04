@@ -25,10 +25,10 @@
 #ifndef LINA_SCALAR_PRODUCT_HPP
 #define LINA_SCALAR_PRODUCT_HPP
 
-#include "detail/utility.hpp"
-#include "for_each_index.hpp"
 #include "lina/concepts/concepts.hpp"
-#include "lina/storage/basic_matrix.hpp"
+#include "lina/concepts/detail/shorthand.hpp"
+#include "lina/types/basic_matrix.hpp"
+#include "lina/types/native_order_iterator.hpp"
 
 #include <utility>
 
@@ -52,11 +52,11 @@ constexpr auto scalar_product(Lhs const& lhs, Rhs const& rhs) noexcept -> matrix
 template<matrix Lhs, typename Rhs>
 constexpr auto scalar_product(std::in_place_t, Lhs& lhs, Rhs const& rhs) noexcept -> Lhs&
 {
-    auto&& product = [&](index_t i)
+    auto&& product = [&](auto& val)
     {
-        matrix_adapter<Lhs>::get(lhs, i) *= rhs;
+        val *= rhs;
     };
-    for_each_index<Lhs>(product);
+    std::ranges::for_each(lhs, product);
     return lhs;
 }
 
